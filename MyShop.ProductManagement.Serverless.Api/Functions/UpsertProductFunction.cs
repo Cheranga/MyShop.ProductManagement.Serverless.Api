@@ -3,20 +3,25 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
+using MyShop.ProductManagement.Api.Services;
+using MyShop.ProductManagement.Services.Requests;
 using Newtonsoft.Json;
 
 namespace MyShop.ProductManagement.Serverless.Api.Functions
 {
     public class UpsertProductFunction
     {
-        public UpsertProductFunction(ILogger<UpsertProductFunction> logger)
+        private readonly IProductsService _productsService;
+
+        public UpsertProductFunction(IProductsService productsService, ILogger<UpsertProductFunction> logger)
         {
-            
+            _productsService = productsService;
         }
 
         [FunctionName(nameof(UpsertProductFunction))]
@@ -24,8 +29,17 @@ namespace MyShop.ProductManagement.Serverless.Api.Functions
             HttpRequest request)
         {
             var content = await new StreamReader(request.Body).ReadToEndAsync();
-            
-            return new OkResult();
+
+            var upsertProductRequest = JsonConvert.DeserializeObject<UpsertProductRequest>(content);
+
+            var operation = await _productsService.UpsertProductAsync(upsertProductRequest);
+
+            if (operation.Status)
+            {
+                return new OkObjectResult(operation.Data);
+            }
+
+            return new InternalServerErrorResult();
         }
     }
 }
