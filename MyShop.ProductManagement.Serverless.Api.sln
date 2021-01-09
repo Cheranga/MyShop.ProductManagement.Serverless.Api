@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.30717.126
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyShop.ProductManagement.Serverless.Api", "MyShop.ProductManagement.Serverless.Api\MyShop.ProductManagement.Serverless.Api.csproj", "{F1446724-4393-49B4-8D37-8B453322C7A6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyShop.ProductManagement.Serverless.Api.Tests", "MyShop.ProductManagement.Serverless.Api.Tests\MyShop.ProductManagement.Serverless.Api.Tests.csproj", "{1BC026E0-14E4-4D13-AB5C-B70C56ED5943}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{F1446724-4393-49B4-8D37-8B453322C7A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F1446724-4393-49B4-8D37-8B453322C7A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F1446724-4393-49B4-8D37-8B453322C7A6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1BC026E0-14E4-4D13-AB5C-B70C56ED5943}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1BC026E0-14E4-4D13-AB5C-B70C56ED5943}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1BC026E0-14E4-4D13-AB5C-B70C56ED5943}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1BC026E0-14E4-4D13-AB5C-B70C56ED5943}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
