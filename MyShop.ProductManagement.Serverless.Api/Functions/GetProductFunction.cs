@@ -5,6 +5,7 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
 using MyShop.ProductManagement.Api.Services;
+using MyShop.ProductManagement.Serverless.Api.Extensions;
 using MyShop.ProductManagement.Services.Requests;
 
 namespace MyShop.ProductManagement.Serverless.Api.Functions
@@ -23,9 +24,16 @@ namespace MyShop.ProductManagement.Serverless.Api.Functions
         [FunctionName(nameof(GetProductFunction))]
         public async Task<IActionResult> GetProductAsync([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "products/{productCode}")]
             HttpRequest request, string productCode)
-        {   
+        {
+            var correlationId = request.GetHeaderValue("correlationId");
+            if (string.IsNullOrWhiteSpace(correlationId))
+            {
+                return new BadRequestObjectResult("correlationId is required in the HTTP header.");
+            }
+
             var getProductRequest = new GetProductRequest
             {
+                CorrelationId = correlationId,
                 ProductCode = productCode
             };
 

@@ -7,6 +7,7 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
 using MyShop.ProductManagement.Api.Services;
+using MyShop.ProductManagement.Serverless.Api.Extensions;
 using MyShop.ProductManagement.Services.Requests;
 using Newtonsoft.Json;
 
@@ -27,9 +28,17 @@ namespace MyShop.ProductManagement.Serverless.Api.Functions
         public async Task<IActionResult> UpsertProductAsync([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "products")]
             HttpRequest request)
         {
-            var content = await new StreamReader(request.Body).ReadToEndAsync();
+            var correlationId = request.GetHeaderValue("correlationId");
+            if (string.IsNullOrWhiteSpace(correlationId))
+            {
+                return new BadRequestObjectResult("correlationId is required in the HTTP header.");
+            }
 
-            var upsertProductRequest = JsonConvert.DeserializeObject<UpsertProductRequest>(content);
+            var upsertProductRequest = await request.ToModel<UpsertProductRequest>();
+            if (upsertProductRequest != null)
+            {
+                upsertProductRequest.CorrelationId = correlationId;
+            }
 
             var operation = await _productsService.UpsertProductAsync(upsertProductRequest);
 
