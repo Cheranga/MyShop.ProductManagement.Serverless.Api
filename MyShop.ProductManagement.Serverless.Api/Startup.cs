@@ -1,5 +1,4 @@
-﻿using MediatR;
-using Microsoft.Azure.Functions.Extensions.DependencyInjection;
+﻿using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Azure.WebJobs.Host.Bindings;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,8 +19,6 @@ namespace MyShop.ProductManagement.Serverless.Api
             var configuration = GetConfigurationRoot(builder);
 
             services.UseProductsServices(configuration);
-
-            services.AddMediatR(typeof(Startup).Assembly, typeof(Bootstrapper).Assembly, typeof(DataAccess.Bootstrapper).Assembly);
         }
 
         protected virtual IConfigurationRoot GetConfigurationRoot(IFunctionsHostBuilder builder)
@@ -32,13 +29,11 @@ namespace MyShop.ProductManagement.Serverless.Api
 
             var configuration = new ConfigurationBuilder()
                 .SetBasePath(executionContextOptions.AppDirectory)
-                .AddJsonFile("local.settings.json", true)
+                .AddJsonFile("local.settings.json", true, true)
                 .AddEnvironmentVariables()
                 .Build();
 
             return configuration;
         }
-
-
     }
 }

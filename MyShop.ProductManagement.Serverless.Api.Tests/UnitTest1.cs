@@ -1,4 +1,3 @@
-using System;
 using Xunit;
 
 namespace MyShop.ProductManagement.Serverless.Api.Tests
@@ -8,7 +7,6 @@ namespace MyShop.ProductManagement.Serverless.Api.Tests
         [Fact]
         public void Test1()
         {
-
         }
     }
 }

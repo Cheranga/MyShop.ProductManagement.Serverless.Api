@@ -9,7 +9,7 @@ namespace MyShop.ProductManagement.DataAccess
         IDbConnection GetConnection();
     }
 
-    public class DbConnectionFactory : IDbConnectionFactory
+    internal class DbConnectionFactory : IDbConnectionFactory
     {
         private readonly string _connectionString;
 

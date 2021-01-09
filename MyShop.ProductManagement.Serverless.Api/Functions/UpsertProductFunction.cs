@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
+﻿using System.IO;
 using System.Threading.Tasks;
 using System.Web.Http;
 using Microsoft.AspNetCore.Http;
@@ -17,11 +14,13 @@ namespace MyShop.ProductManagement.Serverless.Api.Functions
 {
     public class UpsertProductFunction
     {
+        private readonly ILogger<UpsertProductFunction> _logger;
         private readonly IProductsService _productsService;
 
         public UpsertProductFunction(IProductsService productsService, ILogger<UpsertProductFunction> logger)
         {
             _productsService = productsService;
+            _logger = logger;
         }
 
         [FunctionName(nameof(UpsertProductFunction))]

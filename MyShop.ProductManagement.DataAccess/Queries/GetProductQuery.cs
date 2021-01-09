@@ -6,11 +6,11 @@ namespace MyShop.ProductManagement.DataAccess.Queries
 {
     public class GetProductQuery : IRequest<Result<ProductDataModel>>
     {
-        public string ProductCode { get; }
-
         public GetProductQuery(string productCode)
         {
             ProductCode = productCode;
         }
+
+        public string ProductCode { get; }
     }
 }

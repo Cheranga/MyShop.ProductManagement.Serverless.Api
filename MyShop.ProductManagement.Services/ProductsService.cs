@@ -3,13 +3,13 @@ using MediatR;
 using Microsoft.Extensions.Logging;
 using MyShop.ProductManagement.Core;
 using MyShop.ProductManagement.DataAccess.CommandHandlers;
-using MyShop.ProductManagement.DataAccess.Models;
 using MyShop.ProductManagement.DataAccess.Queries;
 using MyShop.ProductManagement.Services.Requests;
+using MyShop.ProductManagement.Services.Responses;
 
 namespace MyShop.ProductManagement.Api.Services
 {
-    public class ProductsService : IProductsService
+    internal class ProductsService : IProductsService
     {
         private readonly ILogger<ProductsService> _logger;
         private readonly IMediator _mediator;
@@ -20,7 +20,7 @@ namespace MyShop.ProductManagement.Api.Services
             _logger = logger;
         }
 
-        public async Task<Result<ProductDataModel>> UpsertProductAsync(UpsertProductRequest request)
+        public async Task<Result<GetProductResponse>> UpsertProductAsync(UpsertProductRequest request)
         {
             _logger.LogInformation("Upserting product {correlationId}", request.CorrelationId);
 
@@ -28,15 +28,21 @@ namespace MyShop.ProductManagement.Api.Services
             if (!operation.Status)
             {
                 _logger.LogError("{correlationId} Error occured when upserting product. {upsertProductRequest}", request.CorrelationId, request);
-                return Result<ProductDataModel>.Failure(operation.Validation);
+                return Result<GetProductResponse>.Failure(operation.Validation);
             }
 
             _logger.LogInformation("{correlationId} Upserting product successful. {upsertProductRequest}", request.CorrelationId, request);
 
-            return Result<ProductDataModel>.Success(operation.Data);
+            var response = new GetProductResponse
+            {
+                ProductCode = operation.Data.ProductCode,
+                ProductName = operation.Data.ProductName
+            };
+
+            return Result<GetProductResponse>.Success(response);
         }
 
-        public async Task<Result<ProductDataModel>> GetProductAsync(GetProductRequest request)
+        public async Task<Result<GetProductResponse>> GetProductAsync(GetProductRequest request)
         {
             _logger.LogInformation("Getting product {correlationId}", request.CorrelationId);
 
@@ -44,17 +50,23 @@ namespace MyShop.ProductManagement.Api.Services
             if (!operation.Status)
             {
                 _logger.LogError("{correlationId} error occured when getting the product.", request.CorrelationId);
-                return Result<ProductDataModel>.Failure("", "Error occured when getting the product.");
+                return Result<GetProductResponse>.Failure("", "Error occured when getting the product.");
             }
 
             var product = operation.Data;
 
             if (product == null)
             {
-                return Result<ProductDataModel>.Failure("", "Product not found.");
+                return Result<GetProductResponse>.Failure("", "Product not found.");
             }
 
-            return Result<ProductDataModel>.Success(product);
+            var response = new GetProductResponse
+            {
+                ProductCode = product.ProductCode,
+                ProductName = product.ProductName
+            };
+
+            return Result<GetProductResponse>.Success(response);
         }
     }
 }
