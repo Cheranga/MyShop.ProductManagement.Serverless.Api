@@ -26,4 +26,9 @@ variables:
     value: "sg$(funcAppName)$(environmentName)"    
   - name: sgType
     value: Standard_GRS    
-  
+  - name: planName
+    value: "plan-$(funcAppName)-$(environmentName)"
+  - name: planSku
+    value: Y1        
+  - name: planTier
+    value: Dynamic

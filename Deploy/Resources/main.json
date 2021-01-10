@@ -53,12 +53,25 @@
         "sgType": {
             "type": "string",
             "defaultValue": "TBD"
+        },
+        "planName": {
+            "type": "string",
+            "defaultValue":"TBD"
+        },
+        "planSku": {
+            "type": "string",
+            "defaultValue": "TBD"
+        },
+        "planTier": {
+            "type": "string",
+            "defaultValue":"TBD"
         }
     },
     "variables": {
         "templateUri": "[concat('https://',parameters('sharedStorageName'),'.blob.core.windows.net/',parameters('sharedStorageContainer'))]",
         "storageAccountDeployment": "[concat(parameters('sgName'),'-',parameters('buildNumber'),'-deployment')]",
-        "dbDeployment": "[concat(parameters('serverName'),'-',parameters('buildNumber'),'-deployment')]"
+        "dbDeployment": "[concat(parameters('serverName'),'-',parameters('buildNumber'),'-deployment')]",
+        "aspDeployment": "[concat(parameters('planName'),'-',parameters('buildNumber'),'-deployment')]"
     },
     "resources": [
         {
@@ -115,6 +128,32 @@
                     },
                     "allowedIpAddresses": {
                         "value": "[parameters('allowedIpAddresses')]"
+                    }
+                }
+            }
+        },
+        {
+            "name": "[variables('aspDeployment')]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2019-10-01",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(variables('templateUri'),'/AppServicePlan/template.json','?', parameters('templateSas'))]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "planName": {
+                        "value": "[parameters('planName')]"
+                    },
+                    "planLocation": {
+                        "value": "[parameters('rgLocation')]"
+                    },
+                    "planSku": {
+                        "value": "[parameters('planSku')]"
+                    },
+                    "planTier": {
+                        "value": "[parameters('planTier')]"
                     }
                 }
             }
