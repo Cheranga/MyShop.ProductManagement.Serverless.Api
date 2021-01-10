@@ -26,6 +26,8 @@ steps:
       inline: |        
         $deployments = Get-AzResourceGroupDeployment -ResourceGroupName $(rgName) | Where-Object Timestamp -lt ((Get-Date).AddDays($(deploymentsOlderThan)))
 
+        echo $(rgName)
+        
         foreach ($deployment in $deployments) {
           Remove-AzResourceGroupDeployment -ResourceGroupName $(rgName) -Name $deployment.DeploymentName
           Write-Host 'Removed Deployment: ' $deployment.DeploymentName 

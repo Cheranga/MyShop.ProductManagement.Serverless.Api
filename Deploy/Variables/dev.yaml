@@ -8,4 +8,6 @@ variables:
 - name: rgLocation
   value: Australia Southeast
 - name: createNewRg
-  value: true    
+  value: true
+- name: deploymentsOlderThan
+  value: 1      
