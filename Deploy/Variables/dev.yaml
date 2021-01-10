@@ -1,0 +1,11 @@
+variables:
+- name: environmentName
+  value: dev
+- name: funcAppName
+  value: funkyproductsapi    
+- name: rgName
+  value: "rg-$(funcAppName)-$(environmentName)"  
+- name: rgLocation
+  value: Australia Southeast
+- name: createNewRg
+  value: true    

@@ -30,3 +30,7 @@ steps:
 - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
   displayName: Build
   artifact: drop
+
+- publish: $(Build.Repository.LocalPath)/Deploy/Resources
+  displayName: Copy ARM Templates
+  artifact: deploy   
