@@ -3,7 +3,7 @@ variables:
   - name: environmentName
     value: dev
   - name: funcAppName
-    value: funkyproductsapi
+    value: productsapi
   - name: rgName
     value: "rg-$(funcAppName)-$(environmentName)"
   - name: rgLocation
