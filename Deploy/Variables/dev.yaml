@@ -3,7 +3,7 @@ variables:
   - name: environmentName
     value: dev
   - name: funcAppName
-    value: productsapi
+    value: funkyproductsapi
   - name: rgName
     value: "rg-$(funcAppName)-$(environmentName)"
   - name: rgLocation
@@ -13,7 +13,7 @@ variables:
   - name: deploymentsOlderThan
     value: -1
   - name: sharedStorageName
-    value: "sgshared$(funcAppName)$(environmentName)"
+    value: "$(funcAppName)$(environmentName)"
   - name: sharedContainerName
     value: armtemplates
   - name: serverName
