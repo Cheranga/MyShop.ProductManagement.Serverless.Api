@@ -74,4 +74,7 @@ steps:
         -allowedIpAddresses "$(allowedIpAddresses)" 
         -sgName "$(sgName)" 
         -sgType "$(sgType)" 
+        -planName "$(planName)" 
+        -planSku "$(planSku)" 
+        -planTier "$(planTier)" 
         
