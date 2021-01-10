@@ -67,7 +67,7 @@ steps:
         -rgLocation "$(rgLocation)" 
         -sharedStorageName "$(sharedStorageName)" 
         -sharedStorageContainer "$(sharedContainerName)" 
-        -serverName "$(serverName)"   
+        -serverName "$(serverName)" 
         -databaseName "$(databaseName)" 
         -adminUserName "$(adminUserName)" 
         -adminPassword "$(adminPassword)" 
