@@ -10,4 +10,8 @@ variables:
 - name: createNewRg
   value: true
 - name: deploymentsOlderThan
-  value: 1      
+  value: 1
+- name: sharedStorageName
+  value: "sg$(funcAppName)$(environmentName)"
+- name: sharedContainerName
+  value: armtemplates  
