@@ -1,17 +1,25 @@
 variables:
-- name: environmentName
-  value: dev
-- name: funcAppName
-  value: funkyproductsapi    
-- name: rgName
-  value: "rg-$(funcAppName)-$(environmentName)"  
-- name: rgLocation
-  value: Australia Southeast
-- name: createNewRg
-  value: true
-- name: deploymentsOlderThan
-  value: 1
-- name: sharedStorageName
-  value: "sg$(funcAppName)$(environmentName)"
-- name: sharedContainerName
-  value: armtemplates  
+  - group: ProductsApiDev
+  - name: environmentName
+    value: dev
+  - name: funcAppName
+    value: funkyproductsapi
+  - name: rgName
+    value: "rg-$(funcAppName)-$(environmentName)"
+  - name: rgLocation
+    value: Australia Southeast
+  - name: createNewRg
+    value: true
+  - name: deploymentsOlderThan
+    value: -1
+  - name: sharedStorageName
+    value: "sg$(funcAppName)$(environmentName)"
+  - name: sharedContainerName
+    value: armtemplates
+  - name: serverName
+    value: "sql-$(funcAppName)-$(environmentName)"
+  - name: databaseName
+    value: "sqldb-$(funcAppName)-$(environmentName)"          
+  - name: adminUserName
+    value: "admin-$(funcAppName)-$(environmentName)"
+  
