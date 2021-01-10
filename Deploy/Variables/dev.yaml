@@ -13,7 +13,7 @@ variables:
   - name: deploymentsOlderThan
     value: -1
   - name: sharedStorageName
-    value: "sg$(funcAppName)$(environmentName)"
+    value: "sgshared$(funcAppName)$(environmentName)"
   - name: sharedContainerName
     value: armtemplates
   - name: serverName
@@ -22,4 +22,8 @@ variables:
     value: "sqldb-$(funcAppName)-$(environmentName)"          
   - name: adminUserName
     value: "admin-$(funcAppName)-$(environmentName)"
+  - name: sgName
+    value: "sg$(funcAppName)$(environmentName)"    
+  - name: sgType
+    value: Standard_GRS    
   

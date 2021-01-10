@@ -71,5 +71,7 @@ steps:
         -databaseName "$(databaseName)" 
         -adminUserName "$(adminUserName)" 
         -adminPassword "$(adminPassword)" 
-        -allowedIpAddresses "$(allowedIpAddresses)"        
+        -allowedIpAddresses "$(allowedIpAddresses)" 
+        -sgName "$(sgName)" 
+        -sgType "$(sgType)" 
         
