@@ -2,6 +2,10 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
+        "rgName": {
+            "type": "string",
+            "defaultValue": "TBD"
+        },
         "rgLocation": {
             "type": "string",
             "defaultValue": "TBD"
@@ -14,7 +18,7 @@
         },
         "sgType": {
             "type": "string",
-            "defaultValue": "Standard_GRS"            
+            "defaultValue": "Standard_GRS"
         }
     },
     "functions": [],
