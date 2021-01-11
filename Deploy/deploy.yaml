@@ -135,19 +135,18 @@ steps:
       ResourceGroupName: '$(rgName)'
       Slot: Staging     
 
-  - task: AzureFunction@1
-    displayName: 'Migrate database'
-    inputs:
-      function: 'https://fn-funkyproductsapi-dev.azurewebsites.net/api/database'
-      key: '$(functionMasterKey)'
-      method: 'POST' # Options: OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, PATCH
-      headers: '{Content-Type:application/json}' 
-      #queryParameters: # Optional
-      body: |
-        {
-          "input": "test"
-        }
-      waitForCompletion: 'true' # Options: true, false
-      #successCriteria: # Optional                 
-
+- task: AzureFunction@1
+  displayName: 'Migrate database'
+  inputs:
+    function: 'https://fn-funkyproductsapi-dev.azurewebsites.net/api/database'
+    key: '$(functionMasterKey)'
+    method: 'POST' # Options: OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, PATCH
+    headers: '{Content-Type:application/json}' 
+    #queryParameters: # Optional
+    body: |
+      {
+        "input": "test"
+      }
+    waitForCompletion: 'true' # Options: true, false
+    #successCriteria: # Optional                 							
         
