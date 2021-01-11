@@ -231,6 +231,9 @@
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
+                    "rgName": {
+                        "value": "[parameters('rgName')]"
+                    },
                     "rgLocation": {
                         "value": "[parameters('rgLocation')]"
                     },

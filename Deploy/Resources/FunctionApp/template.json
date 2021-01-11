@@ -2,6 +2,10 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
+        "rgName": {
+            "type": "string",
+            "defaultValue": "TBD"
+        },
         "rgLocation": {
             "type": "string",
             "defaultValue": "TBD"
@@ -23,13 +27,13 @@
             "metadata": {
                 "description": "The name of the key vault which the function app will be using."
             }
-        },        
+        },
         "storageAccountConnectionString": {
             "type": "securestring",
             "defaultValue": "TBD"
         }
     },
-    "variables": {        
+    "variables": {
         "dbConnectionString": "[concat('@Microsoft.KeyVault(SecretUri=https://', parameters('keyVaultName'), '.vault.azure.net/secrets/dbConnectionString/')]",
         "appInsightsKey": "[concat('@Microsoft.KeyVault(SecretUri=https://', parameters('keyVaultName'), '.vault.azure.net/secrets/appInsightsKey/')]",
         "timeZone": "AUS Eastern Standard Time"
@@ -69,8 +73,8 @@
                         "[resourceId('Microsoft.Web/sites', parameters('functionAppName'))]"
                     ],
                     "properties": {
-                        "CustomerApiKey": "This is the production setting.",                        
-                        "DatabaseConfig:ConnectionString": "[variables('dbConnectionString')]",                        
+                        "CustomerApiKey": "This is the production setting.",
+                        "DatabaseConfig:ConnectionString": "[variables('dbConnectionString')]",
                         "AzureWebJobsStorage": "[parameters('storageAccountConnectionString')]",
                         "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING": "[parameters('storageAccountConnectionString')]",
                         "WEBSITE_CONTENTSHARE": "[toLower(parameters('functionAppName'))]",
@@ -110,8 +114,8 @@
                         "[resourceId('Microsoft.Web/sites/Slots', parameters('functionAppName'), 'Staging')]"
                     ],
                     "properties": {
-                         "CustomerApiKey": "This is the staging setting.",                        
-                        "DatabaseConfig:ConnectionString": "[variables('dbConnectionString')]",                        
+                        "CustomerApiKey": "This is the staging setting.",
+                        "DatabaseConfig:ConnectionString": "[variables('dbConnectionString')]",
                         "AzureWebJobsStorage": "[parameters('storageAccountConnectionString')]",
                         "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING": "[parameters('storageAccountConnectionString')]",
                         "WEBSITE_CONTENTSHARE": "[toLower(parameters('functionAppName'))]",
@@ -124,5 +128,15 @@
                 }
             ]
         }
-    ]
+    ],
+    "outputs": {
+        "masterKey": {
+            "type": "string",
+            "value": "[listkeys(concat(resourceId(parameters('rgName'), 'Microsoft.Web/sites', parameters('functionAppName')), '/host/default'), '2018-11-01').masterKey]"
+        },
+        "masterKeyStaging": {
+            "type": "string",
+            "value": "[listkeys(concat(resourceId(parameters('rgName'), 'Microsoft.Web/sites/slots', parameters('functionAppName'), 'Staging'), '/host/default'), '2018-11-01').masterKey]"
+        }
+    }
 }
