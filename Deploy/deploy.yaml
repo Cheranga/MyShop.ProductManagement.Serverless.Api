@@ -90,10 +90,10 @@ steps:
       inline: |
         $functionAppDeployment="$(funcAppName)-"+"${{parameters.buildNumber}}-deployment"
         $functionMasterKey=(Get-AzResourceGroupDeployment -ResourceGroupName "$(rgName)" -Name "$functionAppDeployment").Outputs.masterKey.value
-        $stagingFunctionMasterKey=(Get-AzResourceGroupDeployment -ResourceGroupName "$(rgName)" -Name "$functionAppDeployment").Outputs.masterKeyStaging.value
+        # $stagingFunctionMasterKey=(Get-AzResourceGroupDeployment -ResourceGroupName "$(rgName)" -Name "$functionAppDeployment").Outputs.masterKeyStaging.value
         
         Write-Host "##vso[task.setvariable variable=functionMasterKey]$functionMasterKey"
-        Write-Host "##vso[task.setvariable variable=stagingFunctionMasterKey]$stagingFunctionMasterKey"
+        # Write-Host "##vso[task.setvariable variable=stagingFunctionMasterKey]$stagingFunctionMasterKey"
 
   - task: AzureFunctionApp@1
     displayName: "Deploy Azure Function App to slot"
