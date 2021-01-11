@@ -29,9 +29,9 @@
       "apiVersion": "2016-10-01",
       "name": "[variables('keyVaultName')]",
       "location": "[parameters('rgLocation')]",
-      "dependsOn": [
-        "[resourceId('Microsoft.Web/sites', parameters('functionAppName'))]"
-      ],
+      // "dependsOn": [
+      //   "[resourceId('Microsoft.Web/sites', parameters('functionAppName'))]"
+      // ],
       "properties": {
         "enabledForDeployment": true,
         "enabledForTemplateDeployment": true,
