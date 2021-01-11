@@ -133,17 +133,5 @@ steps:
       WebAppName: 'fn-$(funcAppName)-$(environmentName)'      
       SpecifySlotOrASE: true
       ResourceGroupName: '$(rgName)'
-      Slot: Staging     
-
-  - task: AzureFunction@1
-    displayName: 'Migrate database'
-    inputs:
-      function: 'https://fn-funkyproductsapi-dev.azurewebsites.net/api/database'
-      key: $(functionMasterKey)
-      method: 'POST'
-      body: |
-        {
-          "input": "test"
-        }
-      waitForCompletion: true # Options: true, false      
+      Slot: Staging         
         
