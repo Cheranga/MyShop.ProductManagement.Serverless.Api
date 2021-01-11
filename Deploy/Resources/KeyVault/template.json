@@ -21,7 +21,8 @@
   },
   "functions": [],
   "variables": {
-    "keyVaultName": "[concat('kv-', parameters('functionAppName'))]"
+    "keyVaultName": "[concat('kv-', replace(parameters('functionAppName'),'-',''))]",
+    "deployedFunctionAppName":"[concat('fn-',parameters('functionAppName'))]"
   },
   "resources": [
     {
@@ -36,13 +37,13 @@
         "enabledForDeployment": true,
         "enabledForTemplateDeployment": true,
         "enabledForDiskEncryption": true,
-        "tenantId": "[reference(resourceId('Microsoft.Web/sites', parameters('functionAppName')),'2019-08-01', 'full').identity.tenantId]",
+        "tenantId": "[reference(resourceId('Microsoft.Web/sites', variables('deployedFunctionAppName')),'2019-08-01', 'full').identity.tenantId]",
         "accessPolicies": [
           {
             // "tenantId": "[reference(concat('Microsoft.Web/sites/',  parameters('functionAppName'), '/providers/Microsoft.ManagedIdentity/Identities/default'), '2015-08-31-PREVIEW').tenantId]",
-            "tenantId": "[reference(resourceId('Microsoft.Web/sites', parameters('functionAppName')),'2019-08-01', 'full').identity.tenantId]",
+            "tenantId": "[reference(resourceId('Microsoft.Web/sites', variables('deployedFunctionAppName')),'2019-08-01', 'full').identity.tenantId]",
             // "objectId": "[reference(concat('Microsoft.Web/sites/',  parameters('functionAppName'), '/providers/Microsoft.ManagedIdentity/Identities/default'), '2015-08-31-PREVIEW').principalId]",
-            "objectId": "[reference(resourceId('Microsoft.Web/sites', parameters('functionAppName')),'2019-08-01', 'full').identity.principalId]",
+            "objectId": "[reference(resourceId('Microsoft.Web/sites', variables('deployedFunctionAppName')),'2019-08-01', 'full').identity.principalId]",
             "permissions": {
               "secrets": [
                 "get",

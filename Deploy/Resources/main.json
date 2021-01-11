@@ -201,7 +201,7 @@
                 },
                 "parameters": {
                     "functionAppName": {
-                        "value": "[concat('fn-', parameters('funcAppName'),'-', parameters('environmentName'))]"
+                        "value": "[concat(parameters('funcAppName'),'-', parameters('environmentName'))]"
                     },
                     "rgLocation": {
                         "value": "[parameters('rgLocation')]"
