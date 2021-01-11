@@ -135,29 +135,29 @@ steps:
       ResourceGroupName: '$(rgName)'
       Slot: Staging  
 
-  - task: AzurePowerShell@4
-    displayName: "Migrate database"
-    inputs:
-      azureSubscription: "$(azureSubscription)"
-      scriptType: 'inlineScript' # Optional. Options: filePath, inline
-      azurePowerShellVersion: 'latestVersion' # Required. Options: latestVersion, otherVersion
-      inline: |
-        $Body = @{
-            Cook = "Barbara"
-            Meal = "Pizza"
-        }
+  # - task: AzurePowerShell@4
+  #   displayName: "Migrate database"
+  #   inputs:
+  #     azureSubscription: "$(azureSubscription)"
+  #     scriptType: 'inlineScript' # Optional. Options: filePath, inline
+  #     azurePowerShellVersion: 'latestVersion' # Required. Options: latestVersion, otherVersion
+  #     inline: |
+  #       $Body = @{
+  #           Cook = "Barbara"
+  #           Meal = "Pizza"
+  #       }
 
-        $Header = @{
-        "x-functions-key" = "$(functionMasterKey)"
-        }
+  #       $Header = @{
+  #       "x-functions-key" = "$(functionMasterKey)"
+  #       }
  
-        $Parameters = @{
-          Method = "POST"
-          Uri =  "https://fn-funkyproductsapi-dev.azurewebsites.net/api/database"
-          Body = ($Body | ConvertTo-Json) 
-          Headers     = $Header
-          ContentType = "application/json"
-        }       
+  #       $Parameters = @{
+  #         Method = "POST"
+  #         Uri =  "https://fn-funkyproductsapi-dev.azurewebsites.net/api/database"
+  #         Body = ($Body | ConvertTo-Json) 
+  #         Headers     = $Header
+  #         ContentType = "application/json"
+  #       }       
 
-        Invoke-RestMethod @Parameters             
+  #       Invoke-RestMethod @Parameters             
         
