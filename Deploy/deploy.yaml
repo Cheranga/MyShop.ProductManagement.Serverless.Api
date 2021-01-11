@@ -88,7 +88,7 @@ steps:
       scriptType: 'inlineScript' # Optional. Options: filePath, inline
       azurePowerShellVersion: 'latestVersion' # Required. Options: latestVersion, otherVersion
       inline: |
-        $functionAppDeployment="app-$(apiName)-$(environmentName)insights-"+"${{parameters.buildNumber}}-deployment"
+        $functionAppDeployment="$(funcAppName)-"+"${{parameters.buildNumber}}-deployment"
         $functionMasterKey=(Get-AzResourceGroupDeployment -ResourceGroupName "$(rgName)" -Name "$functionAppDeployment").Outputs.masterKey.value
         $stagingFunctionMasterKey=(Get-AzResourceGroupDeployment -ResourceGroupName "$(rgName)" -Name "$functionAppDeployment").Outputs.masterKeyStaging.value
         
