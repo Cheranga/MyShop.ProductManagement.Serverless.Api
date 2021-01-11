@@ -78,4 +78,5 @@ steps:
         -planSku "$(planSku)" 
         -planTier "$(planTier)" 
         -funcAppName "$(funcAppName)" 
+        -environmentName "$(environmentName)"
         

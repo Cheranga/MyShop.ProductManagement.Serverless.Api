@@ -23,29 +23,15 @@
             "metadata": {
                 "description": "The name of the key vault which the function app will be using."
             }
-        },
-        "storageAccountName": {
-            "type": "string",
-            "metadata": {
-                "description": "The name of the storage account which the function app will be using."
-            }
-        },
-        "appInsightsKey": {
-            "type": "securestring",
-            "defaultValue": "TBD"
-        },
-        "dbConnectionString": {
-            "type": "securestring",
-            "defaultValue": "TBD"
-        },
+        },        
         "storageAccountConnectionString": {
             "type": "securestring",
             "defaultValue": "TBD"
         }
     },
-    "variables": {
-        // "applicationInsightsName": "[concat('appi-', parameters('functionAppName'))]",
-        // "apiKey": "[concat('@Microsoft.KeyVault(SecretUri=https://', parameters('keyVaultName'), '.vault.azure.net/secrets/apiKey/')]",
+    "variables": {        
+        "dbConnectionString": "[concat('@Microsoft.KeyVault(SecretUri=https://', parameters('keyVaultName'), '.vault.azure.net/secrets/dbConnectionString/')]",
+        "appInsightsKey": "[concat('@Microsoft.KeyVault(SecretUri=https://', parameters('keyVaultName'), '.vault.azure.net/secrets/appInsightsKey/')]",
         "timeZone": "AUS Eastern Standard Time"
     },
     "resources": [
@@ -83,15 +69,13 @@
                         "[resourceId('Microsoft.Web/sites', parameters('functionAppName'))]"
                     ],
                     "properties": {
-                        "CustomerApiKey": "This is the production setting.",
-                        // "ApiKey": "[variables('apiKey')]",
-                        "DatabaseConfig:ConnectionString": "[parameters('dbConnectionString')]",
-                        // "AzureWebJobsStorage": "[concat('DefaultEndpointsProtocol=https;AccountName=', parameters('storageAccountName'), ';EndpointSuffix=', environment().suffixes.storage, ';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName')), '2019-06-01').keys[0].value)]",
+                        "CustomerApiKey": "This is the production setting.",                        
+                        "DatabaseConfig:ConnectionString": "[variables('dbConnectionString')]",                        
                         "AzureWebJobsStorage": "[parameters('storageAccountConnectionString')]",
                         "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING": "[parameters('storageAccountConnectionString')]",
                         "WEBSITE_CONTENTSHARE": "[toLower(parameters('functionAppName'))]",
                         "FUNCTIONS_EXTENSION_VERSION": "~3",
-                        "APPINSIGHTS_INSTRUMENTATIONKEY": "[parameters('appInsightsKey')]",
+                        "APPINSIGHTS_INSTRUMENTATIONKEY": "[variables('appInsightsKey')]",
                         "FUNCTIONS_WORKER_RUNTIME": "dotnet",
                         "WEBSITE_TIME_ZONE": "[variables('timeZone')]",
                         "WEBSITE_ADD_SITENAME_BINDINGS_IN_APPHOST_CONFIG": 1
@@ -105,7 +89,7 @@
         {
             "type": "Microsoft.Web/sites/slots",
             "name": "[concat(parameters('functionAppName'),'/Staging')]",
-            "location": "[resourceGroup().location]",
+            "location": "[parameters('rgLocation')]",
             "kind": "functionapp",
             "apiVersion": "2016-08-01",
             "dependsOn": [
@@ -126,15 +110,13 @@
                         "[resourceId('Microsoft.Web/sites/Slots', parameters('functionAppName'), 'Staging')]"
                     ],
                     "properties": {
-                        "CustomerApiKey": "This is the staging setting.",
-                        // "ApiKey": "[variables('apiKey')]",
-                        "DatabaseConfig:ConnectionString": "[parameters('dbConnectionString')]",
-                        // "AzureWebJobsStorage": "[concat('DefaultEndpointsProtocol=https;AccountName=', parameters('storageAccountName'), ';EndpointSuffix=', environment().suffixes.storage, ';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName')), '2019-06-01').keys[0].value)]",
+                         "CustomerApiKey": "This is the staging setting.",                        
+                        "DatabaseConfig:ConnectionString": "[variables('dbConnectionString')]",                        
                         "AzureWebJobsStorage": "[parameters('storageAccountConnectionString')]",
                         "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING": "[parameters('storageAccountConnectionString')]",
                         "WEBSITE_CONTENTSHARE": "[toLower(parameters('functionAppName'))]",
                         "FUNCTIONS_EXTENSION_VERSION": "~3",
-                        "APPINSIGHTS_INSTRUMENTATIONKEY": "[parameters('appInsightsKey')]",
+                        "APPINSIGHTS_INSTRUMENTATIONKEY": "[variables('appInsightsKey')]",
                         "FUNCTIONS_WORKER_RUNTIME": "dotnet",
                         "WEBSITE_TIME_ZONE": "[variables('timeZone')]",
                         "WEBSITE_ADD_SITENAME_BINDINGS_IN_APPHOST_CONFIG": 1

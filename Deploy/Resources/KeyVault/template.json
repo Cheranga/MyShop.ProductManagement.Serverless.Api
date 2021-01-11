@@ -1,28 +1,34 @@
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "functionAppName": {
-            "type": "string",
-            "defaultValue": "TBD"
-        },
-        "keyVaultName": {
-            "type": "string",
-            "defaultValue":"TBD"
-        },
-        "dbConnectionString": {
-            "type": "securestring",
-            "defaultValue":"TBD"
-        }
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "functionAppName": {
+      "type": "string",
+      "defaultValue": "TBD"
     },
-    "functions": [],
-    "variables": {},
-    "resources": [
-        {
+    "rgLocation": {
+      "type": "string",
+      "defaultValue": "TBD"
+    },
+    "dbConnectionString": {
+      "type": "securestring",
+      "defaultValue": "TBD"
+    },
+    "appInsightsKey": {
+      "type": "securestring",
+      "defaultValue": "TBD"
+    }
+  },
+  "functions": [],
+  "variables": {
+    "keyVaultName": "[concat('kv-', parameters('functionAppName'))]"
+  },
+  "resources": [
+    {
       "type": "Microsoft.KeyVault/vaults",
       "apiVersion": "2016-10-01",
-      "name": "[parameters('keyVaultName')]",
-      "location": "[resourceGroup().location]",
+      "name": "[variables('keyVaultName')]",
+      "location": "[parameters('rgLocation')]",
       "dependsOn": [
         "[resourceId('Microsoft.Web/sites', parameters('functionAppName'))]"
       ],
@@ -54,14 +60,25 @@
           "name": "dbConnectionString",
           "apiVersion": "2016-10-01",
           "dependsOn": [
-            "[resourceId('Microsoft.KeyVault/vaults/', parameters('keyVaultName'))]"
+            "[resourceId('Microsoft.KeyVault/vaults/', variables('keyVaultName'))]"
           ],
           "properties": {
             "value": "[parameters('dbConnectionString')]"
           }
-        }        
+        },
+        {
+          "type": "secrets",
+          "name": "appInsightsKey",
+          "apiVersion": "2016-10-01",
+          "dependsOn": [
+            "[resourceId('Microsoft.KeyVault/vaults/', variables('keyVaultName'))]"
+          ],
+          "properties": {
+            "value": "[parameters('appInsightsKey')]"
+          }
+        }
       ]
     }
-    ],
-    "outputs": {}
+  ],
+  "outputs": {}
 }
