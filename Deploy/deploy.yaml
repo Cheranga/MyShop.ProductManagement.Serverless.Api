@@ -79,4 +79,60 @@ steps:
         -planTier "$(planTier)" 
         -funcAppName "$(funcAppName)" 
         -environmentName "$(environmentName)"
+
+#  The below two tasks ("Setting up variables to be transformed in configurations" and "Transform configurations" can be used to transform web API configurations)
+  - task: AzurePowerShell@4
+    displayName: "Setting up variables to be transformed in configurations"
+    inputs:
+      azureSubscription: "$(azureSubscription)"
+      scriptType: 'inlineScript' # Optional. Options: filePath, inline
+      azurePowerShellVersion: 'latestVersion' # Required. Options: latestVersion, otherVersion
+      inline: |
+        $functionAppDeployment="app-$(apiName)-$(environmentName)insights-"+"${{parameters.buildNumber}}-deployment"
+        $functionMasterKey=(Get-AzResourceGroupDeployment -ResourceGroupName "$(rgName)" -Name "$functionAppDeployment").Outputs.masterKey.value
+        $stagingFunctionMasterKey=(Get-AzResourceGroupDeployment -ResourceGroupName "$(rgName)" -Name "$functionAppDeployment").Outputs.masterKeyStaging.value
+        
+        Write-Host "##vso[task.setvariable variable=functionMasterKey]$functionMasterKey"
+        Write-Host "##vso[task.setvariable variable=stagingFunctionMasterKey]$stagingFunctionMasterKey"
+
+  - task: AzureFunctionApp@1
+    displayName: "Deploy Azure Function App to slot"
+    inputs:
+      azureSubscription: "$(azureSubscription)"
+      appType: functionApp
+      appName: "func-$(functionAppName)-$(environmentName)"
+      package: "$(Pipeline.Workspace)/drop/$(Build.BuildId).zip"
+      deployToSlotOrASE: true
+      resourceGroupName: "$(rgName)"
+      slotName: "Staging"
+
+  - task: AzureAppServiceManage@0
+    displayName: 'Start Staging Slot'
+    inputs:
+      azureSubscription: '$(azureSubscription)'    
+      Action: 'Start Azure App Service'
+      WebAppName: 'fn-$(funcAppName)-$(environmentName)'
+      SpecifySlotOrASE: true
+      ResourceGroupName: "$(rgName)"
+      Slot: Staging  
+
+  - task: AzureAppServiceManage@0
+    displayName: 'Swap Slot'
+    inputs:
+      azureSubscription: '$(azureSubscription)'    
+      WebAppName: 'fn-$(funcAppName)-$(environmentName)'      
+      ResourceGroupName: '$(rgName)'
+      SourceSlot: Staging
+      SwapWithProduction: true
+
+  - task: AzureAppServiceManage@0
+    displayName: 'Stop Slot'
+    inputs:
+      azureSubscription: '$(azureSubscription)'    
+      Action: 'Stop Azure App Service'
+      WebAppName: 'fn-$(funcAppName)-$(environmentName)'      
+      SpecifySlotOrASE: true
+      ResourceGroupName: '$(rgName)'
+      Slot: Staging                
+
         
