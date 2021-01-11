@@ -206,10 +206,10 @@
                     "rgLocation": {
                         "value": "[parameters('rgLocation')]"
                     },
-                    "dbConnectionString":{
+                    "dbConnectionString": {
                         "value": "[reference(variables('storageAccountDeployment')).outputs.storageAccountConnectionString.value]"
                     },
-                    "appInsightsKey":{
+                    "appInsightsKey": {
                         "value": "[reference(variables('appInsightsDeployment')).outputs.appInsightsKey.value]"
                     }
                 }
@@ -230,7 +230,7 @@
                     "uri": "[concat(variables('templateUri'),'/FunctionApp/template.json','?', parameters('templateSas'))]",
                     "contentVersion": "1.0.0.0"
                 },
-                "parameters": {                    
+                "parameters": {
                     "rgLocation": {
                         "value": "[parameters('rgLocation')]"
                     },
@@ -241,9 +241,9 @@
                         "value": "[parameters('planName')]"
                     },
                     "keyVaultName": {
-                        "value": "[concat('kv-', parameters('funcAppName'),'-',parameters('environmentName'))]"
+                        "value": "[concat('kv-', parameters('funcAppName'), parameters('environmentName'))]"
                     },
-                    "storageAccountConnectionString":{
+                    "storageAccountConnectionString": {
                         "value": "[reference(variables('storageAccountDeployment')).outputs.storageAccountConnectionString.value]"
                     }
                 }
