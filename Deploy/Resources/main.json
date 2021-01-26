@@ -207,16 +207,12 @@
                         "value": "[parameters('rgLocation')]"
                     },
                     "dbConnectionString": {
-                        "value": "[reference(variables('storageAccountDeployment')).outputs.storageAccountConnectionString.value]"
-                    },
-                    "appInsightsKey": {
-                        "value": "[reference(variables('appInsightsDeployment')).outputs.appInsightsKey.value]"
-                    }
+                        "value": "[reference(variables('dbDeployment')).outputs.connectionString.value]"
+                    }                    
                 }
             },
-            "dependsOn": [
-                "[variables('storageAccountDeployment')]",
-                "[variables('appInsightsDeployment')]",
+            "dependsOn": [                
+                "[variables('dbDeployment')]",                
                 "[variables('funcAppDeployment')]"
             ]
         },
