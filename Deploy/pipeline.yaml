@@ -47,6 +47,6 @@ stages:
           steps:
           - template: 'deploy.yaml'  
             parameters:
-              buildNumber: $(Build.BuildNumber)
+              buildNumber: $(Build.BuildNumber)            
                         
 

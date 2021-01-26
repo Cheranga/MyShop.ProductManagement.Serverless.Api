@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
+using System.Web.Http;
 using DbUp;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -24,29 +26,40 @@ namespace MyShop.ProductManagement.Serverless.Api.Functions
         public Task<IActionResult> MigrateDatabaseAsync([HttpTrigger(AuthorizationLevel.Function, "post", Route = "database")]
             HttpRequest request)
         {
-            EnsureDatabase.For.SqlDatabase(_connectionString);
-
-            var upgrader = DeployChanges.To
-                .SqlDatabase(_connectionString)
-                .WithScriptsEmbeddedInAssembly(typeof(MigrateDatabaseFunction).Assembly)
-                .LogToAutodetectedLog()
-                .Build();
-
-            if (upgrader.IsUpgradeRequired())
+            try
             {
-                _logger.LogInformation("Migrating database.");
+                _logger.LogInformation("Database connection string: {connectionString}", _connectionString);
 
-                var upgradeOperation = upgrader.PerformUpgrade();
+                EnsureDatabase.For.SqlDatabase(_connectionString);
 
-                if (upgradeOperation.Successful)
+                var upgrader = DeployChanges.To
+                    .SqlDatabase(_connectionString)
+                    .WithScriptsEmbeddedInAssembly(typeof(MigrateDatabaseFunction).Assembly)
+                    .LogToAutodetectedLog()
+                    .Build();
+
+                if (upgrader.IsUpgradeRequired())
                 {
-                    return Task.FromResult<IActionResult>(new OkResult());
+                    _logger.LogInformation("Migrating database.");
+
+                    var upgradeOperation = upgrader.PerformUpgrade();
+
+                    if (upgradeOperation.Successful)
+                    {
+                        return Task.FromResult<IActionResult>(new OkResult());
+                    }
+
+                    return Task.FromResult<IActionResult>(new BadRequestObjectResult(upgradeOperation.Error));
                 }
 
-                return Task.FromResult<IActionResult>(new BadRequestObjectResult(upgradeOperation.Error));
+                return Task.FromResult<IActionResult>(new OkResult());
+            }
+            catch (Exception exception)
+            {
+                _logger.LogError(exception, "Error occured when migrating the database.");
             }
 
-            return Task.FromResult<IActionResult>(new OkResult());
+            return Task.FromResult<IActionResult>(new InternalServerErrorResult());
         }
     }
 }

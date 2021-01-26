@@ -2,6 +2,10 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
+        "rgName": {
+            "type": "string",
+            "defaultValue": "TBD"
+        },
         "rgLocation": {
             "type": "string",
             "defaultValue": "TBD"
@@ -24,28 +28,17 @@
                 "description": "The name of the key vault which the function app will be using."
             }
         },
-        "storageAccountName": {
-            "type": "string",
-            "metadata": {
-                "description": "The name of the storage account which the function app will be using."
-            }
-        },
-        "appInsightsKey": {
-            "type": "securestring",
-            "defaultValue": "TBD"
-        },
-        "dbConnectionString": {
-            "type": "securestring",
-            "defaultValue": "TBD"
-        },
         "storageAccountConnectionString": {
             "type": "securestring",
             "defaultValue": "TBD"
+        },
+        "appInsightsKey":{
+            "type": "securestring",
+            "defaultValue":"TBD"
         }
     },
     "variables": {
-        // "applicationInsightsName": "[concat('appi-', parameters('functionAppName'))]",
-        // "apiKey": "[concat('@Microsoft.KeyVault(SecretUri=https://', parameters('keyVaultName'), '.vault.azure.net/secrets/apiKey/')]",
+        "dbConnectionString": "[concat('@Microsoft.KeyVault(SecretUri=https://', parameters('keyVaultName'), '.vault.azure.net/secrets/dbConnectionString/)')]",
         "timeZone": "AUS Eastern Standard Time"
     },
     "resources": [
@@ -84,9 +77,7 @@
                     ],
                     "properties": {
                         "CustomerApiKey": "This is the production setting.",
-                        // "ApiKey": "[variables('apiKey')]",
-                        "DatabaseConfig:ConnectionString": "[parameters('dbConnectionString')]",
-                        // "AzureWebJobsStorage": "[concat('DefaultEndpointsProtocol=https;AccountName=', parameters('storageAccountName'), ';EndpointSuffix=', environment().suffixes.storage, ';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName')), '2019-06-01').keys[0].value)]",
+                        "DatabaseConfig:ConnectionString": "[variables('dbConnectionString')]",
                         "AzureWebJobsStorage": "[parameters('storageAccountConnectionString')]",
                         "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING": "[parameters('storageAccountConnectionString')]",
                         "WEBSITE_CONTENTSHARE": "[toLower(parameters('functionAppName'))]",
@@ -105,7 +96,7 @@
         {
             "type": "Microsoft.Web/sites/slots",
             "name": "[concat(parameters('functionAppName'),'/Staging')]",
-            "location": "[resourceGroup().location]",
+            "location": "[parameters('rgLocation')]",
             "kind": "functionapp",
             "apiVersion": "2016-08-01",
             "dependsOn": [
@@ -127,9 +118,7 @@
                     ],
                     "properties": {
                         "CustomerApiKey": "This is the staging setting.",
-                        // "ApiKey": "[variables('apiKey')]",
-                        "DatabaseConfig:ConnectionString": "[parameters('dbConnectionString')]",
-                        // "AzureWebJobsStorage": "[concat('DefaultEndpointsProtocol=https;AccountName=', parameters('storageAccountName'), ';EndpointSuffix=', environment().suffixes.storage, ';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName')), '2019-06-01').keys[0].value)]",
+                        "DatabaseConfig:ConnectionString": "[variables('dbConnectionString')]",
                         "AzureWebJobsStorage": "[parameters('storageAccountConnectionString')]",
                         "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING": "[parameters('storageAccountConnectionString')]",
                         "WEBSITE_CONTENTSHARE": "[toLower(parameters('functionAppName'))]",
@@ -142,5 +131,11 @@
                 }
             ]
         }
-    ]
+    ],
+    "outputs": {
+        "masterKey": {
+            "type": "string",
+            "value": "[listkeys(concat(resourceId(parameters('rgName'), 'Microsoft.Web/sites', parameters('functionAppName')), '/host/default'), '2018-11-01').masterKey]"
+        }
+    }
 }
