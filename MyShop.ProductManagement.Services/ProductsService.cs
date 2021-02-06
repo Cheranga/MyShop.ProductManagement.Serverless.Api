@@ -24,7 +24,7 @@ namespace MyShop.ProductManagement.Api.Services
         {
             _logger.LogInformation("Upserting product {correlationId}", request.CorrelationId);
 
-            var operation = await _mediator.Send(new UpsertProductCommand(request.ProductId, request.ProductCode, request.ProductName));
+            var operation = await _mediator.Send(new UpsertProductCommand(request.ProductCode, request.ProductName));
             if (!operation.Status)
             {
                 _logger.LogError("{correlationId} Error occured when upserting product. {upsertProductRequest}", request.CorrelationId, request);
@@ -57,7 +57,7 @@ namespace MyShop.ProductManagement.Api.Services
 
             if (product == null)
             {
-                return Result<GetProductResponse>.Failure("", "Product not found.");
+                return Result<GetProductResponse>.Success(null);
             }
 
             var response = new GetProductResponse

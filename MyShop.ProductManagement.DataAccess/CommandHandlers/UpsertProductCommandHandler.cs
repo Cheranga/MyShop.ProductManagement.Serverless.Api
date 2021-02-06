@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.Common;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -7,6 +8,7 @@ using MediatR;
 using Microsoft.Extensions.Logging;
 using MyShop.ProductManagement.Core;
 using MyShop.ProductManagement.DataAccess.Models;
+using MyShop.ProductManagement.DataAccess.Queries;
 
 namespace MyShop.ProductManagement.DataAccess.CommandHandlers
 {
@@ -19,15 +21,17 @@ namespace MyShop.ProductManagement.DataAccess.CommandHandlers
 
         private const string UpdateCommand = "update Products set ProductCode=@ProductCode, ProductName=@ProductName " +
                                              "output inserted.Id, inserted.ProductCode, inserted.ProductName " +
-                                             "where id=@Id";
+                                             "where ProductCode=@ProductCode";
 
         private readonly IDbConnectionFactory _dbConnectionFactory;
+        private readonly IMediator _mediator;
         private readonly ILogger<UpsertProductCommandHandler> _logger;
 
 
-        public UpsertProductCommandHandler(IDbConnectionFactory dbConnectionFactory, ILogger<UpsertProductCommandHandler> logger)
+        public UpsertProductCommandHandler(IDbConnectionFactory dbConnectionFactory, IMediator mediator, ILogger<UpsertProductCommandHandler> logger)
         {
             _dbConnectionFactory = dbConnectionFactory;
+            _mediator = mediator;
             _logger = logger;
         }
 
@@ -35,7 +39,18 @@ namespace MyShop.ProductManagement.DataAccess.CommandHandlers
         {
             try
             {
-                var command = request.Id <= 0 ? InsertCommand : UpdateCommand;
+                //
+                // TODO: Validate the command here
+                //
+
+                var getProductOperation = await _mediator.Send(new GetProductQuery(request.ProductCode), cancellationToken);
+                if (!getProductOperation.Status)
+                {
+                    _logger.LogError("Error when getting the product information.");
+                    return Result<ProductDataModel>.Failure("", "Error when getting the product information.");
+                }
+
+                var command = getProductOperation.Data == null ? InsertCommand : UpdateCommand;
 
                 using (var connection = _dbConnectionFactory.GetConnection())
                 {

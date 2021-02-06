@@ -1,15 +1,17 @@
-﻿using System.IO;
+﻿using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.Extensions.Logging;
 using MyShop.ProductManagement.Api.Services;
 using MyShop.ProductManagement.Serverless.Api.Extensions;
 using MyShop.ProductManagement.Services.Requests;
-using Newtonsoft.Json;
+using MyShop.ProductManagement.Services.Responses;
 
 namespace MyShop.ProductManagement.Serverless.Api.Functions
 {
@@ -25,6 +27,10 @@ namespace MyShop.ProductManagement.Serverless.Api.Functions
         }
 
         [FunctionName(nameof(UpsertProductFunction))]
+        [OpenApiOperation("UpsertProduct", "product", Summary = "Insert or update product.", Description = "This will insert a new product or will update an existing product.", Visibility = OpenApiVisibilityType.Important)]
+        [OpenApiRequestBody("application/json", typeof(UpsertProductRequest), Required = true, Description = "The product data which needs to be inserted as a new product or to be updated if it's an existing product.")]
+        [OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(GetProductResponse), Summary = "The product details.", Description = "The product details which was either inserted or updated.")]
+        [OpenApiResponseWithoutBody(HttpStatusCode.MethodNotAllowed, Summary = "Invalid input", Description = "Invalid input")]
         public async Task<IActionResult> UpsertProductAsync([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "products")]
             HttpRequest request)
         {
@@ -47,6 +53,7 @@ namespace MyShop.ProductManagement.Serverless.Api.Functions
                 return new OkObjectResult(operation.Data);
             }
 
+            _logger.LogError("Error occured when upserting product {correlationId}", correlationId);
             return new InternalServerErrorResult();
         }
     }

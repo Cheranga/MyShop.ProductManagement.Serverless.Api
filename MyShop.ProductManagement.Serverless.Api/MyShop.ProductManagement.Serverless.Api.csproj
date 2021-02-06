@@ -1,8 +1,11 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <AzureFunctionsVersion>v3</AzureFunctionsVersion>
   </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="Functions\SwaggerFunctions.cs" />
+  </ItemGroup>
   <ItemGroup>
     <None Remove="Scripts\001-Create_Table_Products.sql" />
     <None Remove="Scripts\002-Create_Index_ProductCode.sql" />
@@ -14,6 +17,7 @@
   <ItemGroup>
     <PackageReference Include="dbup" Version="4.5.0" />
     <PackageReference Include="Microsoft.Azure.Functions.Extensions" Version="1.1.0" />
+    <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.OpenApi" Version="0.2.1-preview" />
     <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="3.0.11" />
   </ItemGroup>
   <ItemGroup>
