@@ -4,7 +4,7 @@ using MyShop.ProductManagement.DataAccess.Models;
 
 namespace MyShop.ProductManagement.DataAccess.Queries
 {
-    public class GetProductQuery : IRequest<Result<ProductDataModel>>
+    public class GetProductQuery : IRequest<Result<Product>>
     {
         public GetProductQuery(string productCode)
         {

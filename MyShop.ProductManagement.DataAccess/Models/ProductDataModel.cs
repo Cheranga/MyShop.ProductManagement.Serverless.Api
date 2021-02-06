@@ -1,6 +1,6 @@
 ﻿namespace MyShop.ProductManagement.DataAccess.Models
 {
-    public class ProductDataModel
+    public class Product
     {
         public int Id { get; set; }
         public string ProductCode { get; set; }

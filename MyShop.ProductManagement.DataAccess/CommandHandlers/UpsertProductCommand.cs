@@ -4,7 +4,7 @@ using MyShop.ProductManagement.DataAccess.Models;
 
 namespace MyShop.ProductManagement.DataAccess.CommandHandlers
 {
-    public class UpsertProductCommand : IRequest<Result<ProductDataModel>>
+    public class UpsertProductCommand : IRequest<Result<Product>>
     {
         public UpsertProductCommand(string productCode, string productName)
         {
