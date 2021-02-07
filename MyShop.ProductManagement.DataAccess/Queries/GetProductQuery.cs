@@ -1,6 +1,5 @@
 ﻿using MediatR;
-using MyShop.ProductManagement.Core;
-using MyShop.ProductManagement.DataAccess.Models;
+using MyShop.ProductManagement.Domain;
 
 namespace MyShop.ProductManagement.DataAccess.Queries
 {

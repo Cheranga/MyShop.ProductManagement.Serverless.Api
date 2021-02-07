@@ -1,4 +1,4 @@
-﻿namespace MyShop.ProductManagement.DataAccess.Models
+﻿namespace MyShop.ProductManagement.Domain
 {
     public class Product
     {

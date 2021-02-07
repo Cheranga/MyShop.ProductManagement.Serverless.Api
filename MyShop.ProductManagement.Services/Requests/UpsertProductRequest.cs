@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace MyShop.ProductManagement.Services.Requests
+namespace MyShop.ProductManagement.Application.Requests
 {
     public class UpsertProductRequest
     {

@@ -7,9 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyShop.ProductManagement.Se
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyShop.ProductManagement.Serverless.Api.Tests", "MyShop.ProductManagement.Serverless.Api.Tests\MyShop.ProductManagement.Serverless.Api.Tests.csproj", "{1BC026E0-14E4-4D13-AB5C-B70C56ED5943}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyShop.ProductManagement.Services", "MyShop.ProductManagement.Services\MyShop.ProductManagement.Services.csproj", "{6E02D64A-060D-4A76-B66F-4BCEC80DEFCF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyShop.ProductManagement.Application", "MyShop.ProductManagement.Services\MyShop.ProductManagement.Application.csproj", "{6E02D64A-060D-4A76-B66F-4BCEC80DEFCF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyShop.ProductManagement.Core", "MyShop.ProductManagement.Core\MyShop.ProductManagement.Core.csproj", "{4593582D-1E2C-4016-9301-15C883EE44E4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyShop.ProductManagement.Domain", "MyShop.ProductManagement.Core\MyShop.ProductManagement.Domain.csproj", "{4593582D-1E2C-4016-9301-15C883EE44E4}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyShop.ProductManagement.DataAccess", "MyShop.ProductManagement.DataAccess\MyShop.ProductManagement.DataAccess.csproj", "{D676D03A-BB34-4B32-92C5-4E89E2BB3B3A}"
 EndProject
@@ -56,6 +56,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{F1446724-4393-49B4-8D37-8B453322C7A6} = {96FD1336-AAAA-46AF-A330-1ECEBA76E4A0}
 		{1BC026E0-14E4-4D13-AB5C-B70C56ED5943} = {6DAB377A-92A9-4F63-9C51-AABF0DAF1BD9}
+		{6E02D64A-060D-4A76-B66F-4BCEC80DEFCF} = {F4E187F8-7859-4093-8FFC-7BD3875CB62F}
 		{4593582D-1E2C-4016-9301-15C883EE44E4} = {6287F563-78EB-48E6-80A6-9BF7780DB85D}
 		{D676D03A-BB34-4B32-92C5-4E89E2BB3B3A} = {D86CE03D-71F9-4A4C-90B7-5184AF8CEDE2}
 	EndGlobalSection

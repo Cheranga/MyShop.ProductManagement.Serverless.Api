@@ -1,14 +1,12 @@
 ﻿using System;
-using System.Data.Common;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Dapper;
 using MediatR;
 using Microsoft.Extensions.Logging;
-using MyShop.ProductManagement.Core;
-using MyShop.ProductManagement.DataAccess.Models;
 using MyShop.ProductManagement.DataAccess.Queries;
+using MyShop.ProductManagement.Domain;
 
 namespace MyShop.ProductManagement.DataAccess.CommandHandlers
 {
@@ -24,8 +22,8 @@ namespace MyShop.ProductManagement.DataAccess.CommandHandlers
                                              "where ProductCode=@ProductCode";
 
         private readonly IDbConnectionFactory _dbConnectionFactory;
-        private readonly IMediator _mediator;
         private readonly ILogger<UpsertProductCommandHandler> _logger;
+        private readonly IMediator _mediator;
 
 
         public UpsertProductCommandHandler(IDbConnectionFactory dbConnectionFactory, IMediator mediator, ILogger<UpsertProductCommandHandler> logger)

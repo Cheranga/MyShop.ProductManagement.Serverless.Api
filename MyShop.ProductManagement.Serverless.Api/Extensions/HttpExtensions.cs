@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -19,7 +18,7 @@ namespace MyShop.ProductManagement.Serverless.Api.Extensions
             return string.Empty;
         }
 
-        public static async Task<TModel> ToModel<TModel>(this HttpRequest request) where TModel:class
+        public static async Task<TModel> ToModel<TModel>(this HttpRequest request) where TModel : class
         {
             try
             {
