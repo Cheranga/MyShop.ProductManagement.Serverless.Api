@@ -26,6 +26,7 @@ namespace MyShop.ProductManagement.DataAccess
             services.AddScoped<IGetProductDataService, GetProductDataService>();
             services.AddScoped<IUpsertProductDataService, UpsertProductDataService>();
             services.AddMediatR(typeof(Bootstrapper).Assembly);
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(PerformanceBehaviour<,>));
         }
     }
 }
