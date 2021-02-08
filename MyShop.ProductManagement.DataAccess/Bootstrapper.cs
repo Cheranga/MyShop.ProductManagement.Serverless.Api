@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using MyShop.ProductManagement.Application.Interfaces;
+using MyShop.ProductManagement.DataAccess.Behaviours;
 using MyShop.ProductManagement.DataAccess.Services;
 
 namespace MyShop.ProductManagement.DataAccess
