@@ -1,8 +1,8 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace MyShop.ProductManagement.Services.Requests
+namespace MyShop.ProductManagement.Application.Requests
 {
-    public class GetProductRequest
+    public class GetProductByCodeRequest
     {
         [JsonIgnore]
         public string CorrelationId { get; set; }

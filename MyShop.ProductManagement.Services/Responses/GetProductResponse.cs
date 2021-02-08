@@ -1,6 +1,4 @@
-﻿using FluentValidation.Results;
-
-namespace MyShop.ProductManagement.Services.Responses
+﻿namespace MyShop.ProductManagement.Application.Responses
 {
     public class GetProductResponse
     {

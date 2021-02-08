@@ -1,10 +1,9 @@
 ﻿using MediatR;
-using MyShop.ProductManagement.Core;
-using MyShop.ProductManagement.DataAccess.Models;
+using MyShop.ProductManagement.Domain;
 
 namespace MyShop.ProductManagement.DataAccess.Queries
 {
-    public class GetProductQuery : IRequest<Result<ProductDataModel>>
+    public class GetProductQuery : IRequest<Result<Product>>
     {
         public GetProductQuery(string productCode)
         {

@@ -9,19 +9,19 @@ using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using MyShop.ProductManagement.Api.Services;
+using MyShop.ProductManagement.Application.Interfaces;
+using MyShop.ProductManagement.Application.Requests;
+using MyShop.ProductManagement.Application.Responses;
 using MyShop.ProductManagement.Serverless.Api.Extensions;
-using MyShop.ProductManagement.Services.Requests;
-using MyShop.ProductManagement.Services.Responses;
 
 namespace MyShop.ProductManagement.Serverless.Api.Functions
 {
     public class GetProductFunction
     {
         private readonly ILogger<GetProductFunction> _logger;
-        private readonly IProductsService _productService;
+        private readonly IGetProductService _productService;
 
-        public GetProductFunction(IProductsService productService, ILogger<GetProductFunction> logger)
+        public GetProductFunction(IGetProductService productService, ILogger<GetProductFunction> logger)
         {
             _productService = productService;
             _logger = logger;
@@ -41,7 +41,7 @@ namespace MyShop.ProductManagement.Serverless.Api.Functions
                 return new BadRequestObjectResult("correlationId is required in the HTTP header.");
             }
 
-            var getProductRequest = new GetProductRequest
+            var getProductRequest = new GetProductByCodeRequest
             {
                 CorrelationId = correlationId,
                 ProductCode = productCode

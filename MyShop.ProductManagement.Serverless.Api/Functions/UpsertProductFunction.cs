@@ -8,19 +8,19 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.Extensions.Logging;
-using MyShop.ProductManagement.Api.Services;
+using MyShop.ProductManagement.Application.Interfaces;
+using MyShop.ProductManagement.Application.Requests;
+using MyShop.ProductManagement.Application.Responses;
 using MyShop.ProductManagement.Serverless.Api.Extensions;
-using MyShop.ProductManagement.Services.Requests;
-using MyShop.ProductManagement.Services.Responses;
 
 namespace MyShop.ProductManagement.Serverless.Api.Functions
 {
     public class UpsertProductFunction
     {
         private readonly ILogger<UpsertProductFunction> _logger;
-        private readonly IProductsService _productsService;
+        private readonly IUpsertProductService _productsService;
 
-        public UpsertProductFunction(IProductsService productsService, ILogger<UpsertProductFunction> logger)
+        public UpsertProductFunction(IUpsertProductService productsService, ILogger<UpsertProductFunction> logger)
         {
             _productsService = productsService;
             _logger = logger;

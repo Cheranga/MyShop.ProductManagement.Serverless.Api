@@ -1,18 +1,16 @@
 ﻿using System;
-using System.Data.Common;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Dapper;
 using MediatR;
 using Microsoft.Extensions.Logging;
-using MyShop.ProductManagement.Core;
-using MyShop.ProductManagement.DataAccess.Models;
 using MyShop.ProductManagement.DataAccess.Queries;
+using MyShop.ProductManagement.Domain;
 
 namespace MyShop.ProductManagement.DataAccess.CommandHandlers
 {
-    public class UpsertProductCommandHandler : IRequestHandler<UpsertProductCommand, Result<ProductDataModel>>
+    public class UpsertProductCommandHandler : IRequestHandler<UpsertProductCommand, Result<Product>>
     {
         private const string InsertCommand = "insert into Products (ProductCode, ProductName) " +
                                              "output inserted.Id, inserted.ProductCode, inserted.ProductName " +
@@ -24,8 +22,8 @@ namespace MyShop.ProductManagement.DataAccess.CommandHandlers
                                              "where ProductCode=@ProductCode";
 
         private readonly IDbConnectionFactory _dbConnectionFactory;
-        private readonly IMediator _mediator;
         private readonly ILogger<UpsertProductCommandHandler> _logger;
+        private readonly IMediator _mediator;
 
 
         public UpsertProductCommandHandler(IDbConnectionFactory dbConnectionFactory, IMediator mediator, ILogger<UpsertProductCommandHandler> logger)
@@ -35,7 +33,7 @@ namespace MyShop.ProductManagement.DataAccess.CommandHandlers
             _logger = logger;
         }
 
-        public async Task<Result<ProductDataModel>> Handle(UpsertProductCommand request, CancellationToken cancellationToken)
+        public async Task<Result<Product>> Handle(UpsertProductCommand request, CancellationToken cancellationToken)
         {
             try
             {
@@ -47,22 +45,22 @@ namespace MyShop.ProductManagement.DataAccess.CommandHandlers
                 if (!getProductOperation.Status)
                 {
                     _logger.LogError("Error when getting the product information.");
-                    return Result<ProductDataModel>.Failure("", "Error when getting the product information.");
+                    return Result<Product>.Failure("", "Error when getting the product information.");
                 }
 
                 var command = getProductOperation.Data == null ? InsertCommand : UpdateCommand;
 
                 using (var connection = _dbConnectionFactory.GetConnection())
                 {
-                    var upsertedProducts = await connection.QueryAsync<ProductDataModel>(command, request);
+                    var upsertedProducts = await connection.QueryAsync<Product>(command, request);
                     var upsertedProduct = upsertedProducts.FirstOrDefault();
                     if (upsertedProduct == null)
                     {
                         _logger.LogError("Error when upserting product {command}", request);
-                        return Result<ProductDataModel>.Failure("", "Error occured when upserting product.");
+                        return Result<Product>.Failure("", "Error occured when upserting product.");
                     }
 
-                    return Result<ProductDataModel>.Success(upsertedProduct);
+                    return Result<Product>.Success(upsertedProduct);
                 }
             }
             catch (Exception exception)
@@ -70,7 +68,7 @@ namespace MyShop.ProductManagement.DataAccess.CommandHandlers
                 _logger.LogError(exception, "Error occured when upserting product {command}", request);
             }
 
-            return Result<ProductDataModel>.Failure("", "Error occured when upserting product.");
+            return Result<Product>.Failure("", "Error occured when upserting product.");
         }
     }
 }

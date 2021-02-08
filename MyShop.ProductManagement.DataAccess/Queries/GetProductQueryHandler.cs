@@ -4,12 +4,11 @@ using System.Threading.Tasks;
 using Dapper;
 using MediatR;
 using Microsoft.Extensions.Logging;
-using MyShop.ProductManagement.Core;
-using MyShop.ProductManagement.DataAccess.Models;
+using MyShop.ProductManagement.Domain;
 
 namespace MyShop.ProductManagement.DataAccess.Queries
 {
-    public class GetProductQueryHandler : IRequestHandler<GetProductQuery, Result<ProductDataModel>>
+    public class GetProductQueryHandler : IRequestHandler<GetProductQuery, Result<Product>>
     {
         private const string query = "select * from Products where productcode=@productCode";
         private readonly IDbConnectionFactory _dbConnectionFactory;
@@ -21,16 +20,16 @@ namespace MyShop.ProductManagement.DataAccess.Queries
             _logger = logger;
         }
 
-        public async Task<Result<ProductDataModel>> Handle(GetProductQuery request, CancellationToken cancellationToken)
+        public async Task<Result<Product>> Handle(GetProductQuery request, CancellationToken cancellationToken)
         {
             try
             {
                 using (var connection = _dbConnectionFactory.GetConnection())
                 {
                     var commandDefinition = new CommandDefinition(query, new {productCode = request.ProductCode});
-                    var product = await connection.QueryFirstOrDefaultAsync<ProductDataModel>(commandDefinition);
+                    var product = await connection.QueryFirstOrDefaultAsync<Product>(commandDefinition);
 
-                    return Result<ProductDataModel>.Success(product);
+                    return Result<Product>.Success(product);
                 }
             }
             catch (Exception exception)
@@ -38,7 +37,7 @@ namespace MyShop.ProductManagement.DataAccess.Queries
                 _logger.LogError(exception, "Error occured when getting the product {query}", request);
             }
 
-            return Result<ProductDataModel>.Failure("", "Error occured when getting the product.");
+            return Result<Product>.Failure("", "Error occured when getting the product.");
         }
     }
 }

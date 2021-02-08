@@ -1,6 +1,6 @@
 ﻿using FluentValidation.Results;
 
-namespace MyShop.ProductManagement.Core
+namespace MyShop.ProductManagement.Domain
 {
     public class Result
     {

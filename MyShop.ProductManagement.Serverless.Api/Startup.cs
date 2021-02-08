@@ -3,8 +3,9 @@ using Microsoft.Azure.WebJobs.Host.Bindings;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using MyShop.ProductManagement.Application;
+using MyShop.ProductManagement.DataAccess;
 using MyShop.ProductManagement.Serverless.Api;
-using MyShop.ProductManagement.Services;
 
 [assembly: FunctionsStartup(typeof(Startup))]
 
@@ -19,6 +20,7 @@ namespace MyShop.ProductManagement.Serverless.Api
             var configuration = GetConfigurationRoot(builder);
 
             services.UseProductsServices(configuration);
+            services.UseProductsDataAccess(configuration);
         }
 
         protected virtual IConfigurationRoot GetConfigurationRoot(IFunctionsHostBuilder builder)

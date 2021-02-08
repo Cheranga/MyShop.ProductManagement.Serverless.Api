@@ -1,10 +1,9 @@
-﻿using MediatR;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using MyShop.ProductManagement.Api.Services;
-using MyShop.ProductManagement.DataAccess;
+using MyShop.ProductManagement.Application.Interfaces;
+using MyShop.ProductManagement.Application.Services;
 
-namespace MyShop.ProductManagement.Services
+namespace MyShop.ProductManagement.Application
 {
     public static class Bootstrapper
     {
@@ -15,11 +14,8 @@ namespace MyShop.ProductManagement.Services
                 return;
             }
 
-            services.AddScoped<IProductsService, ProductsService>();
-
-            services.AddMediatR(typeof(Bootstrapper).Assembly, typeof(DataAccess.Bootstrapper).Assembly);
-
-            services.UseProductsDataAccess(configuration);
+            services.AddScoped<IGetProductService, GetProductService>();
+            services.AddScoped<IUpsertProductService, UpsertProductService>();
         }
     }
 }

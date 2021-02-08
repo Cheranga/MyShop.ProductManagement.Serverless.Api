@@ -3,15 +3,25 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30717.126
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyShop.ProductManagement.Serverless.Api", "MyShop.ProductManagement.Serverless.Api\MyShop.ProductManagement.Serverless.Api.csproj", "{F1446724-4393-49B4-8D37-8B453322C7A6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyShop.ProductManagement.Serverless.Api", "MyShop.ProductManagement.Serverless.Api\MyShop.ProductManagement.Serverless.Api.csproj", "{F1446724-4393-49B4-8D37-8B453322C7A6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyShop.ProductManagement.Serverless.Api.Tests", "MyShop.ProductManagement.Serverless.Api.Tests\MyShop.ProductManagement.Serverless.Api.Tests.csproj", "{1BC026E0-14E4-4D13-AB5C-B70C56ED5943}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyShop.ProductManagement.Serverless.Api.Tests", "MyShop.ProductManagement.Serverless.Api.Tests\MyShop.ProductManagement.Serverless.Api.Tests.csproj", "{1BC026E0-14E4-4D13-AB5C-B70C56ED5943}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyShop.ProductManagement.Services", "MyShop.ProductManagement.Services\MyShop.ProductManagement.Services.csproj", "{6E02D64A-060D-4A76-B66F-4BCEC80DEFCF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyShop.ProductManagement.Application", "MyShop.ProductManagement.Services\MyShop.ProductManagement.Application.csproj", "{6E02D64A-060D-4A76-B66F-4BCEC80DEFCF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyShop.ProductManagement.Core", "MyShop.ProductManagement.Core\MyShop.ProductManagement.Core.csproj", "{4593582D-1E2C-4016-9301-15C883EE44E4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyShop.ProductManagement.Domain", "MyShop.ProductManagement.Core\MyShop.ProductManagement.Domain.csproj", "{4593582D-1E2C-4016-9301-15C883EE44E4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyShop.ProductManagement.DataAccess", "MyShop.ProductManagement.DataAccess\MyShop.ProductManagement.DataAccess.csproj", "{D676D03A-BB34-4B32-92C5-4E89E2BB3B3A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyShop.ProductManagement.DataAccess", "MyShop.ProductManagement.DataAccess\MyShop.ProductManagement.DataAccess.csproj", "{D676D03A-BB34-4B32-92C5-4E89E2BB3B3A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{D86CE03D-71F9-4A4C-90B7-5184AF8CEDE2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{6287F563-78EB-48E6-80A6-9BF7780DB85D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Application", "Application", "{F4E187F8-7859-4093-8FFC-7BD3875CB62F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "API", "API", "{96FD1336-AAAA-46AF-A330-1ECEBA76E4A0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{6DAB377A-92A9-4F63-9C51-AABF0DAF1BD9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -42,6 +52,13 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F1446724-4393-49B4-8D37-8B453322C7A6} = {96FD1336-AAAA-46AF-A330-1ECEBA76E4A0}
+		{1BC026E0-14E4-4D13-AB5C-B70C56ED5943} = {6DAB377A-92A9-4F63-9C51-AABF0DAF1BD9}
+		{6E02D64A-060D-4A76-B66F-4BCEC80DEFCF} = {F4E187F8-7859-4093-8FFC-7BD3875CB62F}
+		{4593582D-1E2C-4016-9301-15C883EE44E4} = {6287F563-78EB-48E6-80A6-9BF7780DB85D}
+		{D676D03A-BB34-4B32-92C5-4E89E2BB3B3A} = {D86CE03D-71F9-4A4C-90B7-5184AF8CEDE2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {AB3000D8-8868-4E57-93EE-CD7029677490}
