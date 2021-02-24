@@ -1,5 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
+using MediatR;
 using MyShop.ProductManagement.Application.Interfaces;
 using MyShop.ProductManagement.Application.Requests;
 using MyShop.ProductManagement.Application.Responses;
@@ -9,21 +10,18 @@ namespace MyShop.ProductManagement.Application.Services
 {
     internal class UpsertProductService : IUpsertProductService
     {
-        private readonly IUpsertProductDataService _dataService;
+        private readonly IMediator _mediator;
 
-        public UpsertProductService(IUpsertProductDataService dataService)
+        public UpsertProductService(IMediator mediator)
         {
-            _dataService = dataService;
+            _mediator = mediator;
         }
 
         public async Task<Result<GetProductResponse>> UpsertProductAsync(UpsertProductRequest request)
         {
-            //
-            // TODO: Validation
-            //
-
             var cancellationToken = new CancellationTokenSource().Token;
-            var operation = await _dataService.UpsertProductAsync(request, cancellationToken);
+
+            var operation = await _mediator.Send(request, cancellationToken);
 
             if (!operation.Status)
             {

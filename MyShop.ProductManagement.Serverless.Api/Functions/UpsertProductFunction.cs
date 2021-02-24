@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
 using Microsoft.AspNetCore.Http;
@@ -11,6 +12,7 @@ using Microsoft.Extensions.Logging;
 using MyShop.ProductManagement.Application.Interfaces;
 using MyShop.ProductManagement.Application.Requests;
 using MyShop.ProductManagement.Application.Responses;
+using MyShop.ProductManagement.Serverless.Api.Dto;
 using MyShop.ProductManagement.Serverless.Api.Extensions;
 
 namespace MyShop.ProductManagement.Serverless.Api.Functions
@@ -53,8 +55,18 @@ namespace MyShop.ProductManagement.Serverless.Api.Functions
                 return new OkObjectResult(operation.Data);
             }
 
+            var errorResponse = new ErrorResponse
+            {
+                Message = "Error occured when upserting product.",
+                Errors = operation.Validation.Errors.Select(x => x.ErrorMessage).ToList()
+            };
+
             _logger.LogError("Error occured when upserting product {correlationId}", correlationId);
-            return new InternalServerErrorResult();
+            
+            return new ObjectResult(errorResponse)
+            {
+                StatusCode = (int)(HttpStatusCode.BadRequest)
+            };
         }
     }
 }

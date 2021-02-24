@@ -1,5 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
+using MediatR;
 using MyShop.ProductManagement.Application.Interfaces;
 using MyShop.ProductManagement.Application.Requests;
 using MyShop.ProductManagement.Application.Responses;
@@ -9,22 +10,18 @@ namespace MyShop.ProductManagement.Application.Services
 {
     internal class GetProductService : IGetProductService
     {
-        private readonly IGetProductDataService _dataService;
+        private readonly IMediator _mediator;
 
-        public GetProductService(IGetProductDataService dataService)
+        public GetProductService(IMediator mediator)
         {
-            _dataService = dataService;
+            _mediator = mediator;
         }
 
         public async Task<Result<GetProductResponse>> GetProductAsync(GetProductByCodeRequest request)
         {
-            //
-            // TODO: Perform application validation here.
-            //
-
             var cancellationToken = new CancellationTokenSource().Token;
 
-            var operation = await _dataService.GetProductAsync(request, cancellationToken);
+            var operation = await _mediator.Send(request, cancellationToken);
 
             if (!operation.Status)
             {

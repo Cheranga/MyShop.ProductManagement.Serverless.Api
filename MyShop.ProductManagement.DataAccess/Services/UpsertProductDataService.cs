@@ -8,7 +8,7 @@ using MyShop.ProductManagement.Domain;
 
 namespace MyShop.ProductManagement.DataAccess.Services
 {
-    internal class UpsertProductDataService : IUpsertProductDataService
+    internal class UpsertProductDataService : IUpsertProductDataService, IRequestHandler<UpsertProductRequest, Result<Product>>
     {
         private readonly IMediator _mediator;
 
@@ -17,10 +17,9 @@ namespace MyShop.ProductManagement.DataAccess.Services
             _mediator = mediator;
         }
 
-        public async Task<Result<Product>> UpsertProductAsync(UpsertProductRequest request, CancellationToken cancellationToken)
+        public async Task<Result<Product>> Handle(UpsertProductRequest request, CancellationToken cancellationToken)
         {
             var command = new UpsertProductCommand(request.ProductCode, request.ProductName);
-
             var operation = await _mediator.Send(command, cancellationToken);
 
             if (!operation.Status)
@@ -29,6 +28,11 @@ namespace MyShop.ProductManagement.DataAccess.Services
             }
 
             return Result<Product>.Success(operation.Data);
+        }
+
+        public async Task<Result<Product>> UpsertProductAsync(UpsertProductRequest request, CancellationToken cancellationToken)
+        {
+            return await Handle(request, cancellationToken);
         }
     }
 }

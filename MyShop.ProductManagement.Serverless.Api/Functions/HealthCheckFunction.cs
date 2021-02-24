@@ -38,11 +38,6 @@ namespace MyShop.ProductManagement.Serverless.Api.Functions
             }
 
             return new InternalServerErrorResult();
-
-            //return new ObjectResult(healthCheckResponse)
-            //{
-            //    StatusCode = (int) HttpStatusCode.InternalServerError
-            //};
         }
     }
 }

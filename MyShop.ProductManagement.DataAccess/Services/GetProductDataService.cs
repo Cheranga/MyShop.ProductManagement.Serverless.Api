@@ -8,7 +8,7 @@ using MyShop.ProductManagement.Domain;
 
 namespace MyShop.ProductManagement.DataAccess.Services
 {
-    internal class GetProductDataService : IGetProductDataService
+    internal class GetProductDataService : IGetProductDataService, IRequestHandler<GetProductByCodeRequest, Result<Product>>
     {
         private readonly IMediator _mediator;
 
@@ -18,6 +18,11 @@ namespace MyShop.ProductManagement.DataAccess.Services
         }
 
         public async Task<Result<Product>> GetProductAsync(GetProductByCodeRequest request, CancellationToken cancellationToken)
+        {
+            return await Handle(request, cancellationToken);
+        }
+
+        public async Task<Result<Product>> Handle(GetProductByCodeRequest request, CancellationToken cancellationToken)
         {
             var query = new GetProductQuery(request.ProductCode);
             var operation = await _mediator.Send(query, cancellationToken);

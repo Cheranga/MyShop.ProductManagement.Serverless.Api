@@ -1,10 +1,12 @@
-﻿using MediatR;
+﻿using FluentValidation;
+using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using MyShop.ProductManagement.Application.Interfaces;
 using MyShop.ProductManagement.DataAccess.Behaviours;
 using MyShop.ProductManagement.DataAccess.Services;
+using MyShop.ProductManagement.Domain.Validators;
 
 namespace MyShop.ProductManagement.DataAccess
 {
@@ -26,8 +28,6 @@ namespace MyShop.ProductManagement.DataAccess
 
             services.AddScoped<IGetProductDataService, GetProductDataService>();
             services.AddScoped<IUpsertProductDataService, UpsertProductDataService>();
-            services.AddMediatR(typeof(Bootstrapper).Assembly);
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(PerformanceBehaviour<,>));
         }
     }
 }

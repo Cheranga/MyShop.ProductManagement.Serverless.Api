@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
 using Microsoft.AspNetCore.Http;
@@ -12,6 +13,7 @@ using Microsoft.OpenApi.Models;
 using MyShop.ProductManagement.Application.Interfaces;
 using MyShop.ProductManagement.Application.Requests;
 using MyShop.ProductManagement.Application.Responses;
+using MyShop.ProductManagement.Serverless.Api.Dto;
 using MyShop.ProductManagement.Serverless.Api.Extensions;
 
 namespace MyShop.ProductManagement.Serverless.Api.Functions
@@ -51,7 +53,17 @@ namespace MyShop.ProductManagement.Serverless.Api.Functions
             if (!operation.Status)
             {
                 _logger.LogError("Error when getting product data {correlationId}", correlationId);
-                return new InternalServerErrorResult();
+
+                var errorResponse = new ErrorResponse
+                {
+                    Message = "Error when getting the product.",
+                    Errors = operation.Validation.Errors.Select(x => x.ErrorMessage).ToList()
+                };
+
+                return new ObjectResult(errorResponse)
+                {
+                    StatusCode = (int)(HttpStatusCode.BadRequest)
+                };
             }
 
             var product = operation.Data;
