@@ -122,8 +122,8 @@ steps:
       azureSubscription: '$(azureSubscription)'    
       WebAppName: 'fn-$(funcAppName)-$(environmentName)'      
       ResourceGroupName: '$(rgName)'
-      sourceSlot: Staging
-      targetSlot: Production
+      sourceSlot: Production
+      targetSlot: Staging
 
   - task: AzureAppServiceManage@0
     displayName: 'Stop Slot'
