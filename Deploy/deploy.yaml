@@ -100,7 +100,7 @@ steps:
     inputs:
       azureSubscription: '$(azureSubscription)'    
       action: 'Stop Azure App Service' 
-      WebAppName: "$(funcAppName)"
+      WebAppName: "fn-$(funcAppName)-$(environmentName)"
       resourceGroupName: "$(rgName)"
       Slot: "Staging"
       SpecifySlotOrASE: true
@@ -110,7 +110,7 @@ steps:
     inputs:
       azureSubscription: '$(azureSubscription)'    
       appType: functionApp
-      WebAppName: "$(funcAppName)"
+      WebAppName: "fn-$(funcAppName)-$(environmentName)"
       package: '$(Pipeline.Workspace)/drop/$(Build.BuildId).zip'
       enableCustomDeployment: true
       DeploymentType: zipDeploy
@@ -124,7 +124,7 @@ steps:
     inputs:
       azureSubscription: '$(azureSubscription)'    
       action: 'Start Azure App Service' 
-      WebAppName: "$(funcAppName)"
+      WebAppName: "fn-$(funcAppName)-$(environmentName)"
       resourceGroupName: "$(rgName)"
       Slot: "Staging"
       SpecifySlotOrASE: true  
@@ -134,7 +134,7 @@ steps:
     inputs:
       azureSubscription: '$(azureSubscription)'    
       action: 'Swap Slots' 
-      WebAppName: "$(funcAppName)"
+      WebAppName: "fn-$(funcAppName)-$(environmentName)"
       resourceGroupName: "$(rgName)"
       SourceSlot: 'Staging'
 
