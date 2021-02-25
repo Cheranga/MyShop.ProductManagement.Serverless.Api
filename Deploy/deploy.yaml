@@ -122,7 +122,7 @@ steps:
       azureSubscription: '$(azureSubscription)'    
       WebAppName: 'fn-$(funcAppName)-$(environmentName)'      
       ResourceGroupName: '$(rgName)'
-      SourceSlot: Staging
+      SourceSlot: Production
       SwapWithProduction: true
 
   - task: AzureAppServiceManage@0
