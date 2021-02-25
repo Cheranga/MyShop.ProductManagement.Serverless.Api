@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Dapper;
 using MediatR;
 using Microsoft.Extensions.Logging;
+using MyShop.ProductManagement.Application.DataAccess;
 using MyShop.ProductManagement.DataAccess.Queries;
 using MyShop.ProductManagement.Domain;
 

@@ -1,12 +1,6 @@
-﻿using FluentValidation;
-using MediatR;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using MyShop.ProductManagement.Application.Interfaces;
-using MyShop.ProductManagement.DataAccess.Behaviours;
-using MyShop.ProductManagement.DataAccess.Services;
-using MyShop.ProductManagement.Domain.Validators;
 
 namespace MyShop.ProductManagement.DataAccess
 {
@@ -25,9 +19,6 @@ namespace MyShop.ProductManagement.DataAccess
                 var config = provider.GetRequiredService<IOptionsSnapshot<DatabaseConfig>>().Value;
                 return config;
             });
-
-            services.AddScoped<IGetProductDataService, GetProductDataService>();
-            services.AddScoped<IUpsertProductDataService, UpsertProductDataService>();
         }
     }
 }

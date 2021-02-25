@@ -1,10 +1,5 @@
-﻿using FluentValidation;
-using MediatR;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using MyShop.ProductManagement.Application.Interfaces;
-using MyShop.ProductManagement.Application.Services;
-using MyShop.ProductManagement.Domain.Validators;
 
 namespace MyShop.ProductManagement.Application
 {
@@ -16,9 +11,7 @@ namespace MyShop.ProductManagement.Application
             {
                 return;
             }
-
-            services.AddScoped<IGetProductService, GetProductService>();
-            services.AddScoped<IUpsertProductService, UpsertProductService>();
+            // Register application level dependencies here.
         }
     }
 }

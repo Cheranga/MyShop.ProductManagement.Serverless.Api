@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using MyShop.ProductManagement.Application.DataAccess;
 using MyShop.ProductManagement.DataAccess.CommandHandlers;
 using MyShop.ProductManagement.Domain.Validators;
 

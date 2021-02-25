@@ -8,6 +8,7 @@ namespace MyShop.ProductManagement.Application.Validators
     {
         public GetProductByCodeRequestValidator()
         {
+            // This is a application level validation
             RuleFor(x => x.ProductCode).NotNull().NotEmpty().Length(8);
         }
     }

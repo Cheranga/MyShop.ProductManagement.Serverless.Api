@@ -25,7 +25,6 @@ namespace MyShop.ProductManagement.Serverless.Api.Functions
         [OpenApiOperation("health", "product", Summary = "Get the health status of the API.", Description = "After various health checks have been conducted will return the health of the API.", Visibility = OpenApiVisibilityType.Important)]
         [OpenApiResponseWithoutBody(HttpStatusCode.OK, Summary = "API is healthy.", Description = "The health of the API is healthy.")]
         [OpenApiResponseWithoutBody(HttpStatusCode.InternalServerError, Summary = "API is unhealthy.", Description = "The API is not functioning successfully.")]
-        //[OpenApiResponseWithBody(HttpStatusCode.InternalServerError, "application/json", typeof(HealthCheckResult), Summary = "API is unhealthy.", Description = "The API is not functioning successfully.")]
         public async Task<IActionResult> Health([HttpTrigger(AuthorizationLevel.Anonymous, nameof(HttpMethod.Get), Route = "health")]
             HttpRequest request)
         {
