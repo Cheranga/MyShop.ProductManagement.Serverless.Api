@@ -95,16 +95,6 @@ steps:
         Write-Host "##vso[task.setvariable variable=functionMasterKey]$functionMasterKey"
         # Write-Host "##vso[task.setvariable variable=stagingFunctionMasterKey]$stagingFunctionMasterKey"
 
-  - task: AzureAppServiceManage@0
-    displayName: 'Stop Azure App Service (Staging)'
-    inputs:
-      azureSubscription: '$(azureSubscription)'    
-      action: 'Stop Azure App Service' 
-      WebAppName: "fn-$(funcAppName)-$(environmentName)"
-      resourceGroupName: "$(rgName)"
-      Slot: "Staging"
-      SpecifySlotOrASE: true
-
   - task: AzureRmWebAppDeployment@4
     displayName: 'Deploy Azure Function App (Staging)'
     inputs:
@@ -137,6 +127,16 @@ steps:
       WebAppName: "fn-$(funcAppName)-$(environmentName)"
       resourceGroupName: "$(rgName)"
       SourceSlot: 'Staging'
+
+  - task: AzureAppServiceManage@0
+    displayName: 'Stop Azure App Service (Staging)'
+    inputs:
+      azureSubscription: '$(azureSubscription)'    
+      action: 'Stop Azure App Service' 
+      WebAppName: "fn-$(funcAppName)-$(environmentName)"
+      resourceGroupName: "$(rgName)"
+      Slot: "Staging"
+      SpecifySlotOrASE: true      
 
   - task: AzurePowerShell@4
     displayName: "Migrate database"
