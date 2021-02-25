@@ -9,7 +9,7 @@ namespace MyShop.ProductManagement.Application.Validators
         public UpsertProductRequestValidator()
         {
             RuleFor(x => x.CorrelationId).NotNull().NotEmpty();
-            RuleFor(x => x.ProductCode).NotNull().NotEmpty().Length(10);
+            RuleFor(x => x.ProductCode).NotNull().NotEmpty().Length(8);
             RuleFor(x => x.ProductName).NotNull().NotEmpty().MaximumLength(100);
         }
     }
