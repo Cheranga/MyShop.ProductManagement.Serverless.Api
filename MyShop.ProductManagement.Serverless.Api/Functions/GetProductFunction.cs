@@ -1,6 +1,7 @@
 ﻿using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
-using System.Web.Http;
+using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
@@ -9,21 +10,24 @@ using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using MyShop.ProductManagement.Application.Interfaces;
-using MyShop.ProductManagement.Application.Requests;
 using MyShop.ProductManagement.Application.Responses;
+using MyShop.ProductManagement.Domain;
+using MyShop.ProductManagement.Serverless.Api.Dto;
 using MyShop.ProductManagement.Serverless.Api.Extensions;
+using MyShop.ProductManagement.Serverless.Api.ResponseFormatters;
 
 namespace MyShop.ProductManagement.Serverless.Api.Functions
 {
     public class GetProductFunction
     {
         private readonly ILogger<GetProductFunction> _logger;
-        private readonly IGetProductService _productService;
+        private readonly IMediator _mediator;
+        private readonly IRenderAction<GetProductByCodeDto, Result<Product>> _responseFormatter;
 
-        public GetProductFunction(IGetProductService productService, ILogger<GetProductFunction> logger)
+        public GetProductFunction(IMediator mediator, IRenderAction<GetProductByCodeDto, Result<Product>> responseFormatter, ILogger<GetProductFunction> logger)
         {
-            _productService = productService;
+            _mediator = mediator;
+            _responseFormatter = responseFormatter;
             _logger = logger;
         }
 
@@ -41,26 +45,22 @@ namespace MyShop.ProductManagement.Serverless.Api.Functions
                 return new BadRequestObjectResult("correlationId is required in the HTTP header.");
             }
 
-            var getProductRequest = new GetProductByCodeRequest
+            var dto = new GetProductByCodeDto
             {
                 CorrelationId = correlationId,
                 ProductCode = productCode
             };
 
-            var operation = await _productService.GetProductAsync(getProductRequest);
+            var cancellationToken = new CancellationTokenSource().Token;
+            var operation = await _mediator.Send(dto, cancellationToken);
+
             if (!operation.Status)
             {
-                _logger.LogError("Error when getting product data {correlationId}", correlationId);
-                return new InternalServerErrorResult();
+                _logger.LogError("Error occured when getting product: {correlationId}", correlationId);
             }
 
-            var product = operation.Data;
-            if (product == null)
-            {
-                return new NotFoundResult();
-            }
-
-            return new OkObjectResult(operation.Data);
+            var result = _responseFormatter.Render(dto, operation);
+            return result;
         }
     }
 }

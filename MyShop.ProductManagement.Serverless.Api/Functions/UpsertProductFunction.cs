@@ -1,6 +1,8 @@
-﻿using System.Net;
+﻿using System.Linq;
+using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
-using System.Web.Http;
+using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
@@ -8,21 +10,25 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.Extensions.Logging;
-using MyShop.ProductManagement.Application.Interfaces;
 using MyShop.ProductManagement.Application.Requests;
 using MyShop.ProductManagement.Application.Responses;
+using MyShop.ProductManagement.Domain;
+using MyShop.ProductManagement.Serverless.Api.Dto;
 using MyShop.ProductManagement.Serverless.Api.Extensions;
+using MyShop.ProductManagement.Serverless.Api.ResponseFormatters;
 
 namespace MyShop.ProductManagement.Serverless.Api.Functions
 {
     public class UpsertProductFunction
     {
         private readonly ILogger<UpsertProductFunction> _logger;
-        private readonly IUpsertProductService _productsService;
+        private readonly IMediator _mediator;
+        private readonly IRenderAction<UpsertProductDto, Result<Product>> _responseFormatter;
 
-        public UpsertProductFunction(IUpsertProductService productsService, ILogger<UpsertProductFunction> logger)
+        public UpsertProductFunction(IMediator mediator, IRenderAction<UpsertProductDto, Result<Product>> responseFormatter, ILogger<UpsertProductFunction> logger)
         {
-            _productsService = productsService;
+            _mediator = mediator;
+            _responseFormatter = responseFormatter;
             _logger = logger;
         }
 
@@ -40,21 +46,22 @@ namespace MyShop.ProductManagement.Serverless.Api.Functions
                 return new BadRequestObjectResult("correlationId is required in the HTTP header.");
             }
 
-            var upsertProductRequest = await request.ToModel<UpsertProductRequest>();
-            if (upsertProductRequest != null)
+            var dto = await request.ToModel<UpsertProductDto>();
+            if (dto != null)
             {
-                upsertProductRequest.CorrelationId = correlationId;
+                dto.CorrelationId = correlationId;
             }
 
-            var operation = await _productsService.UpsertProductAsync(upsertProductRequest);
+            var cancellationToken = new CancellationTokenSource().Token;
+            var operation = await _mediator.Send(dto, cancellationToken);
 
-            if (operation.Status)
+            if (!operation.Status)
             {
-                return new OkObjectResult(operation.Data);
+                _logger.LogError("Error occured when upserting product {correlationId}", correlationId);
             }
 
-            _logger.LogError("Error occured when upserting product {correlationId}", correlationId);
-            return new InternalServerErrorResult();
+            var response = _responseFormatter.Render(dto, operation);
+            return response;
         }
     }
 }

@@ -1,7 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using MyShop.ProductManagement.Application.Interfaces;
-using MyShop.ProductManagement.Application.Services;
 
 namespace MyShop.ProductManagement.Application
 {
@@ -13,9 +11,7 @@ namespace MyShop.ProductManagement.Application
             {
                 return;
             }
-
-            services.AddScoped<IGetProductService, GetProductService>();
-            services.AddScoped<IUpsertProductService, UpsertProductService>();
+            // Register application level dependencies here.
         }
     }
 }
