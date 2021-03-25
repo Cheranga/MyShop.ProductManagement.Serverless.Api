@@ -95,12 +95,22 @@ steps:
         Write-Host "##vso[task.setvariable variable=functionMasterKey]$functionMasterKey"
         # Write-Host "##vso[task.setvariable variable=stagingFunctionMasterKey]$stagingFunctionMasterKey"
 
+  - task: AzureAppServiceManage@0
+    displayName: 'Stop Azure App Service (Staging)'
+    inputs:
+      azureSubscription: '$(azureSubscription)'    
+      action: 'Stop Azure App Service' 
+      WebAppName: "$(funcAppName)"
+      resourceGroupName: "$(rgName)"
+      Slot: "Staging"
+      SpecifySlotOrASE: true
+
   - task: AzureRmWebAppDeployment@4
     displayName: 'Deploy Azure Function App (Staging)'
     inputs:
       azureSubscription: '$(azureSubscription)'    
       appType: functionApp
-      WebAppName: "fn-$(funcAppName)-$(environmentName)"
+      WebAppName: "$(funcAppName)"
       package: '$(Pipeline.Workspace)/drop/$(Build.BuildId).zip'
       enableCustomDeployment: true
       DeploymentType: zipDeploy
@@ -114,29 +124,29 @@ steps:
     inputs:
       azureSubscription: '$(azureSubscription)'    
       action: 'Start Azure App Service' 
-      WebAppName: "fn-$(funcAppName)-$(environmentName)"
+      WebAppName: "$(funcAppName)"
       resourceGroupName: "$(rgName)"
       Slot: "Staging"
-      SpecifySlotOrASE: true  
+      SpecifySlotOrASE: true    
 
   - task: AzureAppServiceManage@0
     displayName: 'Swap slots (Staging to Production)'
     inputs:
       azureSubscription: '$(azureSubscription)'    
       action: 'Swap Slots' 
-      WebAppName: "fn-$(funcAppName)-$(environmentName)"
+      WebAppName: "$(funcAppName)"
       resourceGroupName: "$(rgName)"
-      SourceSlot: 'Staging'
-
+      SourceSlot: 'staging'
+      
   - task: AzureAppServiceManage@0
     displayName: 'Stop Azure App Service (Staging)'
     inputs:
       azureSubscription: '$(azureSubscription)'    
       action: 'Stop Azure App Service' 
-      WebAppName: "fn-$(funcAppName)-$(environmentName)"
+      WebAppName: "$(funcAppName)"
       resourceGroupName: "$(rgName)"
       Slot: "Staging"
-      SpecifySlotOrASE: true      
+      SpecifySlotOrASE: true       
 
   - task: AzurePowerShell@4
     displayName: "Migrate database"
