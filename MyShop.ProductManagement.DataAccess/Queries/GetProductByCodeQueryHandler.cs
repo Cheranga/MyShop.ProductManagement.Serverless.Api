@@ -9,19 +9,19 @@ using MyShop.ProductManagement.Domain;
 
 namespace MyShop.ProductManagement.DataAccess.Queries
 {
-    public class GetProductQueryHandler : IRequestHandler<GetProductQuery, Result<Product>>
+    public class GetProductByCodeQueryHandler : IRequestHandler<GetProductByCodeQuery, Result<Product>>
     {
         private const string query = "select * from Products where productcode=@productCode";
         private readonly IDbConnectionFactory _dbConnectionFactory;
-        private readonly ILogger<GetProductQueryHandler> _logger;
+        private readonly ILogger<GetProductByCodeQueryHandler> _logger;
 
-        public GetProductQueryHandler(IDbConnectionFactory dbConnectionFactory, ILogger<GetProductQueryHandler> logger)
+        public GetProductByCodeQueryHandler(IDbConnectionFactory dbConnectionFactory, ILogger<GetProductByCodeQueryHandler> logger)
         {
             _dbConnectionFactory = dbConnectionFactory;
             _logger = logger;
         }
 
-        public async Task<Result<Product>> Handle(GetProductQuery request, CancellationToken cancellationToken)
+        public async Task<Result<Product>> Handle(GetProductByCodeQuery request, CancellationToken cancellationToken)
         {
             try
             {

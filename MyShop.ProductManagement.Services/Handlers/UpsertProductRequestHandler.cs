@@ -7,18 +7,18 @@ using MyShop.ProductManagement.Domain;
 
 namespace MyShop.ProductManagement.Application.Handlers
 {
-    internal class UpsertProductHandler : IRequestHandler<UpsertProductRequest, Result<Product>>
+    internal class UpsertProductRequestHandler : IRequestHandler<UpsertProductRequest, Result<Product>>
     {
         private readonly IMediator _mediator;
 
-        public UpsertProductHandler(IMediator mediator)
+        public UpsertProductRequestHandler(IMediator mediator)
         {
             _mediator = mediator;
         }
 
         public async Task<Result<Product>> Handle(UpsertProductRequest request, CancellationToken cancellationToken)
         {
-            var getProductQuery = new GetProductQuery(request.ProductCode);
+            var getProductQuery = new GetProductByCodeQuery(request.CorrelationId, request.ProductCode);
             var getProductOperation = await _mediator.Send(getProductQuery, cancellationToken);
 
             if (!getProductOperation.Status)
@@ -37,7 +37,7 @@ namespace MyShop.ProductManagement.Application.Handlers
 
         private async Task<Result<Product>> UpdateProductAsync(UpsertProductRequest request, CancellationToken cancellationToken)
         {
-            var updateCommand = new UpdateProductCommand(request.ProductCode, request.ProductName);
+            var updateCommand = new UpdateProductCommand(request.CorrelationId, request.ProductCode, request.ProductName);
             var operation = await _mediator.Send(updateCommand, cancellationToken);
 
             return operation;

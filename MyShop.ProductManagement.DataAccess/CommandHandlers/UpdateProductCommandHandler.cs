@@ -11,12 +11,12 @@ namespace MyShop.ProductManagement.DataAccess.CommandHandlers
 {
     public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand, Result<Product>>
     {
-        private readonly IDbConnectionFactory _dbConnectionFactory;
-        private readonly ILogger<UpdateProductCommandHandler> _logger;
-
         private const string UpdateCommand = "update Products set ProductCode=@ProductCode, ProductName=@ProductName " +
                                              "output inserted.Id, inserted.ProductCode, inserted.ProductName " +
                                              "where ProductCode=@ProductCode";
+
+        private readonly IDbConnectionFactory _dbConnectionFactory;
+        private readonly ILogger<UpdateProductCommandHandler> _logger;
 
         public UpdateProductCommandHandler(IDbConnectionFactory dbConnectionFactory, ILogger<UpdateProductCommandHandler> logger)
         {

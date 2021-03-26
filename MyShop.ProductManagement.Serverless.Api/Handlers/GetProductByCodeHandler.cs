@@ -18,10 +18,7 @@ namespace MyShop.ProductManagement.Serverless.Api.Handlers
 
         public async Task<Result<Product>> Handle(GetProductByCodeDto request, CancellationToken cancellationToken)
         {
-            var serviceRequest = new GetProductByCodeRequest
-            {
-                ProductCode = request?.ProductCode
-            };
+            var serviceRequest = new GetProductByCodeRequest(request.CorrelationId, request.ProductCode);
 
             var operation = await _mediator.Send(serviceRequest, cancellationToken);
             return operation;

@@ -1,5 +1,4 @@
 ﻿using System.Net;
-using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -40,10 +39,6 @@ namespace MyShop.ProductManagement.Serverless.Api.Functions
             HttpRequest request, string productCode)
         {
             var correlationId = request.GetHeaderValue("correlationId");
-            if (string.IsNullOrWhiteSpace(correlationId))
-            {
-                return new BadRequestObjectResult("correlationId is required in the HTTP header.");
-            }
 
             var dto = new GetProductByCodeDto
             {
@@ -51,8 +46,7 @@ namespace MyShop.ProductManagement.Serverless.Api.Functions
                 ProductCode = productCode
             };
 
-            var cancellationToken = new CancellationTokenSource().Token;
-            var operation = await _mediator.Send(dto, cancellationToken);
+            var operation = await _mediator.Send(dto);
 
             if (!operation.Status)
             {

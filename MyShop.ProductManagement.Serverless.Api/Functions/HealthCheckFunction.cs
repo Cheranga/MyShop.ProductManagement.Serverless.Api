@@ -1,7 +1,6 @@
 ﻿using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using System.Web.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
@@ -35,10 +34,10 @@ namespace MyShop.ProductManagement.Serverless.Api.Functions
             {
                 return new OkResult();
             }
-            
+
             return new ObjectResult(healthCheckResponse)
             {
-                StatusCode = (int)HttpStatusCode.InternalServerError
+                StatusCode = (int) HttpStatusCode.InternalServerError
             };
         }
     }

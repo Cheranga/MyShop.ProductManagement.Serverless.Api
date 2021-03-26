@@ -8,7 +8,6 @@ using Microsoft.Extensions.Options;
 using MyShop.ProductManagement.Application;
 using MyShop.ProductManagement.DataAccess;
 using MyShop.ProductManagement.Domain;
-using MyShop.ProductManagement.Domain.Behaviours;
 using MyShop.ProductManagement.Serverless.Api;
 using MyShop.ProductManagement.Serverless.Api.Dto;
 using MyShop.ProductManagement.Serverless.Api.HealthChecks;

@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
@@ -19,11 +18,7 @@ namespace MyShop.ProductManagement.Serverless.Api.HealthChecks
 
         public async Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context, CancellationToken cancellationToken = new CancellationToken())
         {
-            var getProductByCodeRequest = new GetProductByCodeRequest
-            {
-                CorrelationId = "HEALTH_CHECK",
-                ProductCode = "BLAHBLAH"
-            };
+            var getProductByCodeRequest = new GetProductByCodeRequest("HEALTH_CHECK", "BLAHBLAH");
 
             var operation = await _mediator.Send(getProductByCodeRequest, cancellationToken);
 
@@ -32,7 +27,7 @@ namespace MyShop.ProductManagement.Serverless.Api.HealthChecks
                 return HealthCheckResult.Healthy();
             }
 
-            var errorData = operation.Validation.Errors.ToDictionary(x => x.ErrorCode, x => (object)x.ErrorMessage);
+            var errorData = operation.Validation.Errors.ToDictionary(x => x.ErrorCode, x => (object) x.ErrorMessage);
 
             return HealthCheckResult.Unhealthy("Accessing product data", data: errorData);
         }
