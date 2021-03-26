@@ -20,6 +20,11 @@ namespace MyShop.ProductManagement.Domain.Validators
 
         public async Task<Result<TResponse>> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<Result<TResponse>> next)
         {
+            if (_validator == null)
+            {
+                return await next();
+            }
+
             _logger.LogInformation("Validating {request}", typeof(TRequest).Name);
 
             var validationResult = await _validator.ValidateAsync(request, cancellationToken);
