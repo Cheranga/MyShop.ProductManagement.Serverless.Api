@@ -7,9 +7,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using MyShop.ProductManagement.Application;
 using MyShop.ProductManagement.DataAccess;
-using MyShop.ProductManagement.DataAccess.Behaviours;
 using MyShop.ProductManagement.Domain;
-using MyShop.ProductManagement.Domain.Validators;
+using MyShop.ProductManagement.Domain.Behaviours;
 using MyShop.ProductManagement.Serverless.Api;
 using MyShop.ProductManagement.Serverless.Api.Dto;
 using MyShop.ProductManagement.Serverless.Api.HealthChecks;
@@ -28,20 +27,52 @@ namespace MyShop.ProductManagement.Serverless.Api
 
             var configuration = GetConfigurationRoot(builder);
 
-            services.UseProductsServices(configuration);
-            services.UseProductsDataAccess(configuration);
+            RegisterApiServices(services)
+                .UseProductsServices(configuration)
+                .UseProductsDataAccess(configuration)
+                .RegisterDomainServices();
+        }
 
-            services.AddTransient<IRenderAction<GetProductByCodeDto, Result<Product>>, DisplayProductFormatter>();
-            services.AddTransient<IRenderAction<UpsertProductDto, Result<Product>>, UpsertProductFormatter>();
+        private static IServiceCollection RegisterApiServices(IServiceCollection services)
+        {
+            RegisterResponseFormatters(services);
+            RegisterMediators(services);
+            RegisterHealthChecks(services);
+            RegisterValidators(services);
 
+            return services;
+        }
+
+        private static void RegisterValidators(IServiceCollection services)
+        {
+            var validatorAssemblies = new[]
+            {
+                typeof(Startup).Assembly,
+                typeof(Bootstrapper).Assembly,
+                typeof(DataAccess.Bootstrapper).Assembly
+            };
+            services.AddValidatorsFromAssemblies(validatorAssemblies);
+        }
+
+        private static void RegisterHealthChecks(IServiceCollection services)
+        {
             services.AddHealthChecks()
                 .AddCheck<DatabaseHealthCheckService>("Database health check.");
+        }
 
-            services.AddValidatorsFromAssemblies(new[] {typeof(Startup).Assembly, typeof(Application.Bootstrapper).Assembly, typeof(DataAccess.Bootstrapper).Assembly});
+        private static void RegisterMediators(IServiceCollection services)
+        {
+            var mediatorAssemblies = new[]
+            {
+                typeof(Startup).Assembly, typeof(Bootstrapper).Assembly, typeof(DataAccess.Bootstrapper).Assembly
+            };
+            services.AddMediatR(mediatorAssemblies);
+        }
 
-            services.AddMediatR(typeof(Startup), typeof(Application.Bootstrapper), typeof(DataAccess.Bootstrapper));
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(PerformanceBehaviour<,>));
+        private static void RegisterResponseFormatters(IServiceCollection services)
+        {
+            services.AddTransient<IRenderAction<GetProductByCodeDto, Result<Product>>, DisplayProductFormatter>();
+            services.AddTransient<IRenderAction<UpsertProductDto, Result<Product>>, UpsertProductFormatter>();
         }
 
         protected virtual IConfigurationRoot GetConfigurationRoot(IFunctionsHostBuilder builder)

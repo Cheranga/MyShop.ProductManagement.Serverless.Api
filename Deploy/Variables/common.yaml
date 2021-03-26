@@ -1,0 +1,34 @@
+variables:
+  - group: ProductsApiDev
+  - name: environmentName
+    value: dev
+  - name: funcAppName
+    value: funkyproductsapi
+  - name: rgName
+    value: "rg-$(funcAppName)-$(environmentName)"
+  - name: rgLocation
+    value: Australia Southeast
+  - name: createNewRg
+    value: true
+  - name: deploymentsOlderThan
+    value: -1
+  - name: sharedStorageName
+    value: "$(funcAppName)$(environmentName)"
+  - name: sharedContainerName
+    value: armtemplates
+  - name: serverName
+    value: "sql-$(funcAppName)-$(environmentName)"
+  - name: databaseName
+    value: "sqldb-$(funcAppName)-$(environmentName)"          
+  - name: adminUserName
+    value: "admin-$(funcAppName)-$(environmentName)"
+  - name: sgName
+    value: "sg$(funcAppName)$(environmentName)"    
+  - name: sgType
+    value: Standard_GRS    
+  - name: planName
+    value: "plan-$(funcAppName)-$(environmentName)"
+  - name: planSku
+    value: Y1        
+  - name: planTier
+    value: Dynamic

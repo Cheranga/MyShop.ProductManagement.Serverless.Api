@@ -21,7 +21,7 @@ namespace MyShop.ProductManagement.Serverless.Api.HealthChecks
             var getProductByCodeRequest = new GetProductByCodeRequest
             {
                 CorrelationId = "HEALTH_CHECK",
-                ProductCode = "BLAH"
+                ProductCode = "BLAHBLAHBLAH"
             };
 
             var operation = await _mediator.Send(getProductByCodeRequest, cancellationToken);
