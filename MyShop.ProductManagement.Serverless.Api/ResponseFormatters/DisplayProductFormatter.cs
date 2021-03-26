@@ -21,7 +21,7 @@ namespace MyShop.ProductManagement.Serverless.Api.ResponseFormatters
 
                 return new ObjectResult(errorResponse)
                 {
-                    StatusCode = (int)HttpStatusCode.BadRequest
+                    StatusCode = (int) HttpStatusCode.BadRequest
                 };
             }
 

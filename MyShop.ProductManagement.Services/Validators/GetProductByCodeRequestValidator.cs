@@ -9,7 +9,7 @@ namespace MyShop.ProductManagement.Application.Validators
         public GetProductByCodeRequestValidator()
         {
             RuleFor(x => x.CorrelationId).NotNull().NotEmpty();
-            
+
             // This is a application level validation
             RuleFor(x => x.ProductCode).NotNull().NotEmpty().Length(8);
         }

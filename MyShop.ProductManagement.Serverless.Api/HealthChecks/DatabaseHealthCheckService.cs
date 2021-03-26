@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
@@ -28,7 +27,7 @@ namespace MyShop.ProductManagement.Serverless.Api.HealthChecks
                 return HealthCheckResult.Healthy();
             }
 
-            var errorData = operation.Validation.Errors.ToDictionary(x => x.ErrorCode, x => (object)x.ErrorMessage);
+            var errorData = operation.Validation.Errors.ToDictionary(x => x.ErrorCode, x => (object) x.ErrorMessage);
 
             return HealthCheckResult.Unhealthy("Accessing product data", data: errorData);
         }

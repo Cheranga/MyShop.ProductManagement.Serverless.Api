@@ -7,7 +7,7 @@ namespace MyShop.ProductManagement.Domain.Validators
     {
         protected ModelValidatorBase()
         {
-            this.CascadeMode = CascadeMode.Stop;
+            CascadeMode = CascadeMode.Stop;
         }
 
         protected override bool PreValidate(ValidationContext<T> context, ValidationResult result)
