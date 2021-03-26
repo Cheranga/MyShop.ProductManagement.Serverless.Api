@@ -5,13 +5,15 @@ namespace MyShop.ProductManagement.Application
 {
     public static class Bootstrapper
     {
-        public static void UseProductsServices(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection UseProductsServices(this IServiceCollection services, IConfiguration configuration)
         {
             if (services == null)
             {
-                return;
+                return services;
             }
             // Register application level dependencies here.
+
+            return services;
         }
     }
 }

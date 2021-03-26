@@ -6,10 +6,11 @@ namespace MyShop.ProductManagement.DataAccess
 {
     public static class Bootstrapper
     {
-        public static void UseProductsDataAccess(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection UseProductsDataAccess(this IServiceCollection services, IConfiguration configuration)
         {
             if (services == null)
             {
+                return services;
             }
 
             services.AddScoped<IDbConnectionFactory, DbConnectionFactory>();
@@ -19,6 +20,8 @@ namespace MyShop.ProductManagement.DataAccess
                 var config = provider.GetRequiredService<IOptionsSnapshot<DatabaseConfig>>().Value;
                 return config;
             });
+
+            return services;
         }
     }
 }
