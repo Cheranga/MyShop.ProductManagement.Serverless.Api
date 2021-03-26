@@ -19,11 +19,7 @@ namespace MyShop.ProductManagement.Serverless.Api.HealthChecks
 
         public async Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context, CancellationToken cancellationToken = new CancellationToken())
         {
-            var getProductByCodeRequest = new GetProductByCodeRequest
-            {
-                CorrelationId = "HEALTH_CHECK",
-                ProductCode = "BLAHBLAH"
-            };
+            var getProductByCodeRequest = new GetProductByCodeRequest("HEALTH_CHECK", "BLAHBLAH");
 
             var operation = await _mediator.Send(getProductByCodeRequest, cancellationToken);
 

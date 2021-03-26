@@ -8,9 +8,13 @@ namespace MyShop.ProductManagement.Application.Requests
 {
     public class GetProductByCodeRequest : IRequest<Result<Product>>, IValidatableRequest
     {
-        [JsonIgnore]
-        public string CorrelationId { get; set; }
+        public string CorrelationId { get; }
+        public string ProductCode { get; }
 
-        public string ProductCode { get; set; }
+        public GetProductByCodeRequest(string correlationId, string productCode)
+        {
+            CorrelationId = correlationId;
+            ProductCode = productCode;
+        }
     }
 }

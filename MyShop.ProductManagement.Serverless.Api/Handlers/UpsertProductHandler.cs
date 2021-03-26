@@ -20,6 +20,7 @@ namespace MyShop.ProductManagement.Serverless.Api.Handlers
         {
             var serviceRequest = new UpsertProductRequest
             {
+                CorrelationId = request.CorrelationId,
                 ProductCode = request.ProductCode,
                 ProductName = request.ProductDescription
             };

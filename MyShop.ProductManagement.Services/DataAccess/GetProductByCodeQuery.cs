@@ -4,13 +4,15 @@ using MyShop.ProductManagement.Domain.Validators;
 
 namespace MyShop.ProductManagement.Application.DataAccess
 {
-    public class GetProductQuery : IRequest<Result<Product>>, IValidatableRequest
+    public class GetProductByCodeQuery : IRequest<Result<Product>>, IValidatableRequest
     {
-        public GetProductQuery(string productCode)
+        public GetProductByCodeQuery(string correlationId, string productCode)
         {
+            CorrelationId = correlationId;
             ProductCode = productCode;
         }
 
+        public string CorrelationId { get; }
         public string ProductCode { get; }
     }
 }

@@ -8,7 +8,6 @@ namespace MyShop.ProductManagement.Application.Requests
 {
     public class UpsertProductRequest : IRequest<Result<Product>>, IValidatableRequest
     {
-        [JsonIgnore]
         public string CorrelationId { get; set; }
 
         public int ProductId { get; set; }

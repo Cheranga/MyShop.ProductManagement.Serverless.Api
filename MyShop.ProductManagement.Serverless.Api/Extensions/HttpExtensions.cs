@@ -18,14 +18,14 @@ namespace MyShop.ProductManagement.Serverless.Api.Extensions
             return string.Empty;
         }
 
-        public static async Task<TModel> ToModel<TModel>(this HttpRequest request) where TModel : class
+        public static async Task<TModel> ToModel<TModel>(this HttpRequest request) where TModel : class, new()
         {
             try
             {
                 var content = await new StreamReader(request.Body).ReadToEndAsync();
                 if (string.IsNullOrWhiteSpace(content))
                 {
-                    return null;
+                    return new TModel();
                 }
 
                 var model = JsonConvert.DeserializeObject<TModel>(content);
@@ -33,7 +33,7 @@ namespace MyShop.ProductManagement.Serverless.Api.Extensions
             }
             catch
             {
-                return null;
+                return new TModel();
             }
         }
     }
