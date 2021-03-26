@@ -4,8 +4,9 @@ using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using MyShop.ProductManagement.Domain.Extensions;
+using MyShop.ProductManagement.Domain.Validators;
 
-namespace MyShop.ProductManagement.Domain.Validators
+namespace MyShop.ProductManagement.Domain.Behaviours
 {
     public class ValidationBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, Result<TResponse>> where TRequest : IValidatableRequest
     {

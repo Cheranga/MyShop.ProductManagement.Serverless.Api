@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using System;
+using FluentValidation;
 using MediatR;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Azure.WebJobs.Host.Bindings;
@@ -7,8 +8,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using MyShop.ProductManagement.Application;
 using MyShop.ProductManagement.DataAccess;
-using MyShop.ProductManagement.DataAccess.Behaviours;
 using MyShop.ProductManagement.Domain;
+using MyShop.ProductManagement.Domain.Behaviours;
 using MyShop.ProductManagement.Domain.Validators;
 using MyShop.ProductManagement.Serverless.Api;
 using MyShop.ProductManagement.Serverless.Api.Dto;
@@ -39,7 +40,20 @@ namespace MyShop.ProductManagement.Serverless.Api
 
             services.AddValidatorsFromAssemblies(new[] {typeof(Startup).Assembly, typeof(Application.Bootstrapper).Assembly, typeof(DataAccess.Bootstrapper).Assembly});
 
-            services.AddMediatR(typeof(Startup), typeof(Application.Bootstrapper), typeof(DataAccess.Bootstrapper));
+            RegisterMediator(services);
+        }
+
+        private static void RegisterMediator(IServiceCollection services)
+        {
+            var mediatorAssemblies = new[]
+            {
+                typeof(Startup).Assembly, typeof(Application.Bootstrapper).Assembly, typeof(DataAccess.Bootstrapper).Assembly
+            };
+            
+            services.AddMediatR(mediatorAssemblies);
+            //
+            // Register the pipelines
+            //
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(PerformanceBehaviour<,>));
         }
