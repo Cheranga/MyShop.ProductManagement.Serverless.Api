@@ -21,9 +21,9 @@ namespace MyShop.ProductManagement.Serverless.Api.Functions
     {
         private readonly ILogger<UpsertProductFunction> _logger;
         private readonly IMediator _mediator;
-        private readonly IRenderAction<UpsertProductDto, Result<Product>> _responseFormatter;
+        private readonly IRenderAction<UpsertProductDto, Result<GetProductResponse>> _responseFormatter;
 
-        public UpsertProductFunction(IMediator mediator, IRenderAction<UpsertProductDto, Result<Product>> responseFormatter, ILogger<UpsertProductFunction> logger)
+        public UpsertProductFunction(IMediator mediator, IRenderAction<UpsertProductDto, Result<GetProductResponse>> responseFormatter, ILogger<UpsertProductFunction> logger)
         {
             _mediator = mediator;
             _responseFormatter = responseFormatter;
