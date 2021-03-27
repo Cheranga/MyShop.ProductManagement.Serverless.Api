@@ -9,7 +9,7 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
 using MyShop.ProductManagement.DataAccess;
 
-namespace MyShop.ProductManagement.Serverless.Api.Functions
+namespace MyShop.ProductManagement.Serverless.Api.Functions.V1
 {
     public class MigrateDatabaseFunction
     {
@@ -23,7 +23,7 @@ namespace MyShop.ProductManagement.Serverless.Api.Functions
         }
 
         [FunctionName(nameof(MigrateDatabaseFunction))]
-        public Task<IActionResult> MigrateDatabaseAsync([HttpTrigger(AuthorizationLevel.Function, "post", Route = "database")]
+        public Task<IActionResult> MigrateDatabaseAsync([HttpTrigger(AuthorizationLevel.Function, "post", Route = "v1/database")]
             HttpRequest request)
         {
             try

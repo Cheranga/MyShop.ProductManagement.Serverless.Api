@@ -8,6 +8,7 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
 using MyShop.ProductManagement.Application.Requests;
 using MyShop.ProductManagement.Application.Responses;
 using MyShop.ProductManagement.Domain;
@@ -15,7 +16,7 @@ using MyShop.ProductManagement.Serverless.Api.Dto;
 using MyShop.ProductManagement.Serverless.Api.Extensions;
 using MyShop.ProductManagement.Serverless.Api.ResponseFormatters;
 
-namespace MyShop.ProductManagement.Serverless.Api.Functions
+namespace MyShop.ProductManagement.Serverless.Api.Functions.V1
 {
     public class UpsertProductFunction
     {
@@ -33,9 +34,10 @@ namespace MyShop.ProductManagement.Serverless.Api.Functions
         [FunctionName(nameof(UpsertProductFunction))]
         [OpenApiOperation("UpsertProduct", "product", Summary = "Insert or update product.", Description = "This will insert a new product or will update an existing product.", Visibility = OpenApiVisibilityType.Important)]
         [OpenApiRequestBody("application/json", typeof(UpsertProductRequest), Required = true, Description = "The product data which needs to be inserted as a new product or to be updated if it's an existing product.")]
+        [OpenApiParameter("correlationId", In = ParameterLocation.Header, Required = true, Type = typeof(string), Summary = "Correlation id", Description = "This will be used to track the operation", Visibility = OpenApiVisibilityType.Important)]
         [OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(GetProductResponse), Summary = "The product details.", Description = "The product details which was either inserted or updated.")]
         [OpenApiResponseWithoutBody(HttpStatusCode.MethodNotAllowed, Summary = "Invalid input", Description = "Invalid input")]
-        public async Task<IActionResult> UpsertProductAsync([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "products")]
+        public async Task<IActionResult> UpsertProductAsync([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "v1/products")]
             HttpRequest request)
         {
             var correlationId = request.GetHeaderValue("correlationId");

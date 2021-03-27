@@ -15,7 +15,7 @@ using MyShop.ProductManagement.Serverless.Api.Dto;
 using MyShop.ProductManagement.Serverless.Api.Extensions;
 using MyShop.ProductManagement.Serverless.Api.ResponseFormatters;
 
-namespace MyShop.ProductManagement.Serverless.Api.Functions
+namespace MyShop.ProductManagement.Serverless.Api.Functions.V1
 {
     public class GetProductFunction
     {
@@ -33,9 +33,10 @@ namespace MyShop.ProductManagement.Serverless.Api.Functions
         [FunctionName(nameof(GetProductFunction))]
         [OpenApiOperation("getProductByProductCode", "product", Summary = "Get product by product code", Description = "Get the product using product code.", Visibility = OpenApiVisibilityType.Important)]
         [OpenApiParameter("productCode", In = ParameterLocation.Path, Required = true, Type = typeof(string), Summary = "Product code", Description = "Need the product code to find the product", Visibility = OpenApiVisibilityType.Important)]
+        [OpenApiParameter("correlationId", In = ParameterLocation.Header, Required = true, Type = typeof(string), Summary = "Correlation id", Description = "This will be used to track the operation", Visibility = OpenApiVisibilityType.Important)]
         [OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(GetProductResponse), Summary = "successful operation", Description = "The product data.")]
         [OpenApiResponseWithoutBody(HttpStatusCode.NotFound, Summary = "unsuccessful operation", Description = "The product is not found.")]
-        public async Task<IActionResult> GetProductAsync([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "products/{productCode}")]
+        public async Task<IActionResult> GetProductAsync([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "v1/products/{productCode}")]
             HttpRequest request, string productCode)
         {
             var correlationId = request.GetHeaderValue("correlationId");

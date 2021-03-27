@@ -162,10 +162,12 @@ steps:
         $Header = @{
         "x-functions-key" = "$(functionMasterKey)"
         }
+
+        $baseUrl = "https://fn-$(funcAppName)-$(environmentName).azurewebsites.net/api/v1/database"
  
         $Parameters = @{
           Method = "POST"
-          Uri =  "https://fn-funkyproductsapi-dev.azurewebsites.net/api/database"
+          Uri =  $baseUrl
           Body = ($Body | ConvertTo-Json) 
           Headers     = $Header
           ContentType = "application/json"
