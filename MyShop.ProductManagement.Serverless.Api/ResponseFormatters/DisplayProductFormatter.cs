@@ -21,7 +21,7 @@ namespace MyShop.ProductManagement.Serverless.Api.ResponseFormatters
 
                 return new ObjectResult(errorResponse)
                 {
-                    StatusCode = (int) HttpStatusCode.BadRequest
+                    StatusCode = (int)HttpStatusCode.BadRequest
                 };
             }
 
@@ -31,7 +31,7 @@ namespace MyShop.ProductManagement.Serverless.Api.ResponseFormatters
                 return new NotFoundResult();
             }
 
-            return new OkObjectResult(response.Data);
+            return new OkObjectResult(product);
         }
     }
 }

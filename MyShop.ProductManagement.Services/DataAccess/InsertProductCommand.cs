@@ -6,12 +6,14 @@ namespace MyShop.ProductManagement.Application.DataAccess
 {
     public class InsertProductCommand : IRequest<Result<Product>>, IValidatableRequest
     {
-        public InsertProductCommand(string productCode, string productName)
+        public InsertProductCommand(string correlationId, string productCode, string productName)
         {
+            CorrelationId = correlationId;
             ProductCode = productCode;
             ProductName = productName;
         }
 
+        public string CorrelationId { get; }
         public string ProductCode { get; }
         public string ProductName { get; }
     }

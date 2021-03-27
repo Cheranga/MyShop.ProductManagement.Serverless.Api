@@ -45,7 +45,7 @@ namespace MyShop.ProductManagement.Application.Handlers
 
         private async Task<Result<Product>> InsertProductAsync(UpsertProductRequest request, CancellationToken cancellationToken)
         {
-            var insertCommand = new InsertProductCommand(request.ProductCode, request.ProductName);
+            var insertCommand = new InsertProductCommand(request.CorrelationId, request.ProductCode, request.ProductName);
             var operation = await _mediator.Send(insertCommand, cancellationToken);
 
             return operation;

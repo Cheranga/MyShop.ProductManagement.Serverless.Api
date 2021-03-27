@@ -3,10 +3,11 @@ using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.Extensions.Logging;
+using MyShop.ProductManagement.Domain.Validators;
 
 namespace MyShop.ProductManagement.Domain.Behaviours
 {
-    public class PerformanceBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+    public class PerformanceBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest:IValidatableRequest
     {
         private readonly ILogger<PerformanceBehaviour<TRequest, TResponse>> _logger;
 
@@ -24,7 +25,7 @@ namespace MyShop.ProductManagement.Domain.Behaviours
 
             stopWatch.Stop();
 
-            _logger.LogInformation("Handling of {request} ended, time taken {timeTaken} ms.", typeof(TRequest).Name, stopWatch.ElapsedMilliseconds);
+            _logger.LogInformation("Handling of {request} with {correlationId} ended, time taken {timeTaken} ms.", typeof(TRequest).Name, request.CorrelationId, stopWatch.ElapsedMilliseconds);
 
             return response;
         }
