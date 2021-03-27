@@ -1,8 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
-using MyShop.ProductManagement.Application.Constants;
 using MyShop.ProductManagement.Application.DataAccess;
 using MyShop.ProductManagement.Application.Requests;
 using MyShop.ProductManagement.Domain;

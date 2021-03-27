@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Net;
 using Microsoft.AspNetCore.Mvc;
+using MyShop.ProductManagement.Application.Constants;
 using MyShop.ProductManagement.Domain;
 using MyShop.ProductManagement.Serverless.Api.Dto;
 
@@ -24,8 +25,8 @@ namespace MyShop.ProductManagement.Serverless.Api.ResponseFormatters
             var errorCode = response.ErrorCode;
 
             switch (errorCode)
-            {   
-                case Application.Constants.ErrorCodes.DataAccessError:
+            {
+                case ErrorCodes.DataAccessError:
                     statusCode = HttpStatusCode.InternalServerError;
                     break;
 
@@ -46,7 +47,7 @@ namespace MyShop.ProductManagement.Serverless.Api.ResponseFormatters
 
             return new ObjectResult(errorResponse)
             {
-                StatusCode = (int)(statusCode)
+                StatusCode = (int) statusCode
             };
         }
     }

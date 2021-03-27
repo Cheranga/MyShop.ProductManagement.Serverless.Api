@@ -6,10 +6,9 @@ namespace MyShop.ProductManagement.Application.Requests
 {
     public class UpsertProductRequest : IRequest<Result<Product>>, IValidatableRequest
     {
-        public string CorrelationId { get; set; }
-
         public int ProductId { get; set; }
         public string ProductCode { get; set; }
         public string ProductName { get; set; }
+        public string CorrelationId { get; set; }
     }
 }

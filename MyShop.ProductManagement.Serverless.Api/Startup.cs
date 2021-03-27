@@ -14,7 +14,6 @@ using MyShop.ProductManagement.Serverless.Api.Dto;
 using MyShop.ProductManagement.Serverless.Api.HealthChecks;
 using MyShop.ProductManagement.Serverless.Api.ResponseFormatters;
 using Serilog;
-using Serilog.Core;
 using Serilog.Events;
 using Bootstrapper = MyShop.ProductManagement.Application.Bootstrapper;
 

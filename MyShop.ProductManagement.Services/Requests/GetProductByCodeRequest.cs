@@ -12,7 +12,8 @@ namespace MyShop.ProductManagement.Application.Requests
             ProductCode = productCode;
         }
 
-        public string CorrelationId { get; }
         public string ProductCode { get; }
+
+        public string CorrelationId { get; }
     }
 }

@@ -13,8 +13,9 @@ namespace MyShop.ProductManagement.Application.DataAccess
             ProductName = productName;
         }
 
-        public string CorrelationId { get; }
         public string ProductCode { get; }
         public string ProductName { get; }
+
+        public string CorrelationId { get; }
     }
 }

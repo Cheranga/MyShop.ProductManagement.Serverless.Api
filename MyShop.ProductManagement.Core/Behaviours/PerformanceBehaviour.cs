@@ -7,7 +7,7 @@ using MyShop.ProductManagement.Domain.Validators;
 
 namespace MyShop.ProductManagement.Domain.Behaviours
 {
-    public class PerformanceBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest:IValidatableRequest
+    public class PerformanceBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : IValidatableRequest
     {
         private readonly ILogger<PerformanceBehaviour<TRequest, TResponse>> _logger;
 

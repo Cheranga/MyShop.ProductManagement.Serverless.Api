@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace MyShop.ProductManagement.Application.Constants
+﻿namespace MyShop.ProductManagement.Application.Constants
 {
     public class ErrorCodes
     {

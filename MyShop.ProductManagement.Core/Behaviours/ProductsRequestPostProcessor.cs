@@ -6,7 +6,7 @@ using MyShop.ProductManagement.Domain.Validators;
 
 namespace MyShop.ProductManagement.Domain.Behaviours
 {
-    public class ProductsRequestPostProcessor<TRequest, TResponse> : IRequestPostProcessor<TRequest, TResponse> where TRequest:class, IValidatableRequest
+    public class ProductsRequestPostProcessor<TRequest, TResponse> : IRequestPostProcessor<TRequest, TResponse> where TRequest : class, IValidatableRequest
     {
         private readonly ILogger<ProductsRequestPostProcessor<TRequest, TResponse>> _logger;
 

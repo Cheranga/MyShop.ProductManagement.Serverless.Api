@@ -4,10 +4,9 @@ using System.Threading.Tasks;
 using Dapper;
 using MediatR;
 using Microsoft.Extensions.Logging;
+using MyShop.ProductManagement.Application.Constants;
 using MyShop.ProductManagement.Application.DataAccess;
 using MyShop.ProductManagement.Domain;
-using MyShop.ProductManagement.Domain.Constants;
-using ErrorCodes = MyShop.ProductManagement.Application.Constants.ErrorCodes;
 
 namespace MyShop.ProductManagement.DataAccess.CommandHandlers
 {

@@ -7,13 +7,13 @@ namespace MyShop.ProductManagement.Application.DataAccess
 {
     public class GetTopProductsQuery : IRequest<Result<List<Product>>>, IValidatableRequest
     {
-        public int Count { get; }
-        public string CorrelationId { get; }
-
         public GetTopProductsQuery(string correlationId, int count)
         {
             CorrelationId = correlationId;
             Count = count;
         }
+
+        public int Count { get; }
+        public string CorrelationId { get; }
     }
 }
