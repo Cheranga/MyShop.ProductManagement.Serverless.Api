@@ -2,6 +2,7 @@
 
 :innocent:
 > This is an API developed using Azure functions to manage products.
+
 :innocent:
 
 ### Architecture and Design
