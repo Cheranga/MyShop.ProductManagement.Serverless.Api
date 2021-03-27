@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using MyShop.ProductManagement.Application;
+using MyShop.ProductManagement.Application.Responses;
 using MyShop.ProductManagement.DataAccess;
 using MyShop.ProductManagement.Domain;
 using MyShop.ProductManagement.Serverless.Api;
@@ -88,8 +89,8 @@ namespace MyShop.ProductManagement.Serverless.Api
 
         private static void RegisterResponseFormatters(IServiceCollection services)
         {
-            services.AddTransient<IRenderAction<GetProductByCodeDto, Result<Product>>, DisplayProductFormatter>();
-            services.AddTransient<IRenderAction<UpsertProductDto, Result<Product>>, UpsertProductFormatter>();
+            services.AddTransient<IRenderAction<GetProductByCodeDto, Result<GetProductResponse>>, DisplayProductFormatter>();
+            services.AddTransient<IRenderAction<UpsertProductDto, Result<GetProductResponse>>, UpsertProductFormatter>();
         }
 
         protected virtual IConfigurationRoot GetConfigurationRoot(IFunctionsHostBuilder builder)

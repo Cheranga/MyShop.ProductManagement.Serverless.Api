@@ -21,9 +21,9 @@ namespace MyShop.ProductManagement.Serverless.Api.Functions
     {
         private readonly ILogger<GetProductFunction> _logger;
         private readonly IMediator _mediator;
-        private readonly IRenderAction<GetProductByCodeDto, Result<Product>> _responseFormatter;
+        private readonly IRenderAction<GetProductByCodeDto, Result<GetProductResponse>> _responseFormatter;
 
-        public GetProductFunction(IMediator mediator, IRenderAction<GetProductByCodeDto, Result<Product>> responseFormatter, ILogger<GetProductFunction> logger)
+        public GetProductFunction(IMediator mediator, IRenderAction<GetProductByCodeDto, Result<GetProductResponse>> responseFormatter, ILogger<GetProductFunction> logger)
         {
             _mediator = mediator;
             _responseFormatter = responseFormatter;

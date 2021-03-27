@@ -4,11 +4,12 @@ using MediatR;
 using MyShop.ProductManagement.Application.Constants;
 using MyShop.ProductManagement.Application.DataAccess;
 using MyShop.ProductManagement.Application.Requests;
+using MyShop.ProductManagement.Application.Responses;
 using MyShop.ProductManagement.Domain;
 
 namespace MyShop.ProductManagement.Application.Handlers
 {
-    internal class GetProductByCodeRequestHandler : IRequestHandler<GetProductByCodeRequest, Result<Product>>
+    internal class GetProductByCodeRequestHandler : IRequestHandler<GetProductByCodeRequest, Result<GetProductResponse>>
     {
         private readonly IMediator _mediator;
 
@@ -17,23 +18,29 @@ namespace MyShop.ProductManagement.Application.Handlers
             _mediator = mediator;
         }
 
-        public async Task<Result<Product>> Handle(GetProductByCodeRequest request, CancellationToken cancellationToken)
+        public async Task<Result<GetProductResponse>> Handle(GetProductByCodeRequest request, CancellationToken cancellationToken)
         {
             var query = new GetProductByCodeQuery(request.CorrelationId, request.ProductCode);
             var operation = await _mediator.Send(query, cancellationToken);
 
             if (!operation.Status)
             {
-                return operation;
+                return Result<GetProductResponse>.Failure(operation.ErrorCode, operation.Validation);
             }
 
             var product = operation.Data;
             if (product == null)
             {
-                return Result<Product>.Failure(ErrorCodes.ProductNotFound, "Product not found.");
+                return Result<GetProductResponse>.Failure(ErrorCodes.ProductNotFound, "Product not found.");
             }
 
-            return operation;
+            var productResponse = new GetProductResponse
+            {
+                ProductCode = request.ProductCode,
+                ProductName = product.ProductName
+            };
+
+            return Result<GetProductResponse>.Success(productResponse);
         }
     }
 }

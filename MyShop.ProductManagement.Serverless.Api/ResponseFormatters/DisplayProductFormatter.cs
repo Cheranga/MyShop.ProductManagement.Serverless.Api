@@ -2,14 +2,15 @@
 using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using MyShop.ProductManagement.Application.Constants;
+using MyShop.ProductManagement.Application.Responses;
 using MyShop.ProductManagement.Domain;
 using MyShop.ProductManagement.Serverless.Api.Dto;
 
 namespace MyShop.ProductManagement.Serverless.Api.ResponseFormatters
 {
-    public class DisplayProductFormatter : IRenderAction<GetProductByCodeDto, Result<Product>>
+    public class DisplayProductFormatter : IRenderAction<GetProductByCodeDto, Result<GetProductResponse>>
     {
-        public IActionResult Render(GetProductByCodeDto request, Result<Product> response)
+        public IActionResult Render(GetProductByCodeDto request, Result<GetProductResponse> response)
         {
             if (!response.Status)
             {
@@ -19,7 +20,7 @@ namespace MyShop.ProductManagement.Serverless.Api.ResponseFormatters
             return new OkObjectResult(response.Data);
         }
 
-        private IActionResult GetErrorResponse(Result<Product> response)
+        private IActionResult GetErrorResponse(Result<GetProductResponse> response)
         {
             HttpStatusCode statusCode;
             var errorCode = response.ErrorCode;
