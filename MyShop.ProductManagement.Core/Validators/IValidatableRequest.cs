@@ -2,5 +2,6 @@
 {
     public interface IValidatableRequest
     {
+        string CorrelationId { get; }
     }
 }
