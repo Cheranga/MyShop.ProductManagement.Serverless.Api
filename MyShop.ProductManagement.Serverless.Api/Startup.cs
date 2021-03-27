@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using MediatR;
+using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Azure.WebJobs.Host.Bindings;
 using Microsoft.Extensions.Configuration;
@@ -14,6 +15,7 @@ using MyShop.ProductManagement.Serverless.Api.HealthChecks;
 using MyShop.ProductManagement.Serverless.Api.ResponseFormatters;
 using Serilog;
 using Serilog.Core;
+using Serilog.Events;
 using Bootstrapper = MyShop.ProductManagement.Application.Bootstrapper;
 
 [assembly: FunctionsStartup(typeof(Startup))]
@@ -52,6 +54,7 @@ namespace MyShop.ProductManagement.Serverless.Api
                 var logger = new LoggerConfiguration()
                     .MinimumLevel.Debug()
                     .WriteTo.Console(outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}")
+                    .WriteTo.ApplicationInsights(TelemetryConfiguration.CreateDefault(), TelemetryConverter.Traces, LogEventLevel.Debug)
                     .CreateLogger();
 
                 builder.AddSerilog(logger);
