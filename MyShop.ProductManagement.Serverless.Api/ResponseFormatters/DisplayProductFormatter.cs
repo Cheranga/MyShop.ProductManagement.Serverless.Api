@@ -31,7 +31,10 @@ namespace MyShop.ProductManagement.Serverless.Api.ResponseFormatters
                 return new NotFoundResult();
             }
 
-            return new OkObjectResult(response.Data);
+            return new OkObjectResult(new
+            {
+                product = product
+            });
         }
     }
 }
