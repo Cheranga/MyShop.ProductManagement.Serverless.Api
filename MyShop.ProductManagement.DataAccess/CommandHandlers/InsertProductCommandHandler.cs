@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Dapper;
 using MediatR;
 using Microsoft.Extensions.Logging;
+using MyShop.ProductManagement.Application.Constants;
 using MyShop.ProductManagement.Application.DataAccess;
 using MyShop.ProductManagement.Domain;
 
@@ -56,7 +57,7 @@ namespace MyShop.ProductManagement.DataAccess.CommandHandlers
                 _logger.LogError(exception, "Error occured when operating on the Products table.");
             }
 
-            return Result<Product>.Failure("", "Error occured when inserting product.");
+            return Result<Product>.Failure(ErrorCodes.DataAccessError, "Error occured when inserting product.");
         }
     }
 }

@@ -10,21 +10,43 @@ namespace MyShop.ProductManagement.Serverless.Api.ResponseFormatters
     {
         public IActionResult Render(UpsertProductDto request, Result<Product> response)
         {
-            if (response.Status)
+            if (!response.Status)
             {
-                return new OkObjectResult(response.Data);
+                return GetErrorResponse(response);
+            }
+
+            return new OkObjectResult(response.Data);
+        }
+
+        private IActionResult GetErrorResponse(Result<Product> response)
+        {
+            HttpStatusCode statusCode;
+            var errorCode = response.ErrorCode;
+
+            switch (errorCode)
+            {   
+                case Application.Constants.ErrorCodes.DataAccessError:
+                    statusCode = HttpStatusCode.InternalServerError;
+                    break;
+
+                default:
+                    statusCode = HttpStatusCode.BadRequest;
+                    break;
             }
 
             var errorResponse = new ErrorResponse
             {
-                CorrelationId = request?.CorrelationId,
-                Message = "Error occured when upserting product.",
-                Errors = response.Validation.Errors.Select(x => x.ErrorMessage).ToList()
+                ErrorCode = response.ErrorCode,
+                Errors = response.Validation.Errors.Select(x => new ErrorMessage
+                {
+                    Field = x.PropertyName,
+                    Message = x.ErrorMessage
+                }).ToList()
             };
 
             return new ObjectResult(errorResponse)
             {
-                StatusCode = (int) HttpStatusCode.BadRequest
+                StatusCode = (int)(statusCode)
             };
         }
     }

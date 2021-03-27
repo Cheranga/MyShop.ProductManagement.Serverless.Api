@@ -37,6 +37,7 @@ namespace MyShop.ProductManagement.Domain
     public class Result<T>
     {
         public T Data { get; set; }
+        public string ErrorCode { get; set; }
         public ValidationResult Validation { get; set; } = new ValidationResult();
         public bool Status => Validation != null && Validation.IsValid;
 
@@ -48,25 +49,18 @@ namespace MyShop.ProductManagement.Domain
             };
         }
 
-        public static Result<T> Failure(params ValidationFailure[] failures)
+        public static Result<T> Failure(string errorCode, ValidationResult validationResult)
         {
             return new Result<T>
             {
-                Validation = new ValidationResult(failures)
-            };
-        }
-
-        public static Result<T> Failure(ValidationResult validationResult)
-        {
-            return new Result<T>
-            {
+                ErrorCode = errorCode,
                 Validation = validationResult
             };
         }
 
-        public static Result<T> Failure(string field, string failure)
+        public static Result<T> Failure(string errorCode, string errorMessage)
         {
-            return Failure(new ValidationFailure(field, failure));
+            return Failure(errorCode, new ValidationResult(new[] { new ValidationFailure("", errorMessage) }));
         }
     }
 }

@@ -1,7 +1,9 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using MyShop.ProductManagement.Domain;
+using MyShop.ProductManagement.Domain.Constants;
 using MyShop.ProductManagement.Serverless.Api.Dto;
 
 namespace MyShop.ProductManagement.Serverless.Api.ResponseFormatters
@@ -12,26 +14,46 @@ namespace MyShop.ProductManagement.Serverless.Api.ResponseFormatters
         {
             if (!response.Status)
             {
-                var errorResponse = new ErrorResponse
-                {
-                    CorrelationId = request?.CorrelationId,
-                    Message = "Error when getting the product.",
-                    Errors = response.Validation.Errors.Select(x => x.ErrorMessage).ToList()
-                };
-
-                return new ObjectResult(errorResponse)
-                {
-                    StatusCode = (int)HttpStatusCode.BadRequest
-                };
+                return GetErrorResponse(response);
             }
 
-            var product = response.Data;
-            if (product == null)
+            return new OkObjectResult(response.Data);
+        }
+
+        private IActionResult GetErrorResponse(Result<Product> response)
+        {
+            HttpStatusCode statusCode;
+            var errorCode = response.ErrorCode;
+
+            switch (errorCode)
             {
-                return new NotFoundResult();
+                case Application.Constants.ErrorCodes.ProductNotFound:
+                    statusCode = HttpStatusCode.NotFound;
+                    break;
+
+                case Application.Constants.ErrorCodes.DataAccessError:
+                    statusCode = HttpStatusCode.InternalServerError;
+                    break;
+
+                default:
+                    statusCode = HttpStatusCode.BadRequest;
+                    break;
             }
 
-            return new OkObjectResult(product);
+            var errorResponse = new ErrorResponse
+            {
+                ErrorCode = response.ErrorCode,
+                Errors = response.Validation.Errors.Select(x => new ErrorMessage
+                {
+                    Field = x.PropertyName,
+                    Message = x.ErrorMessage
+                }).ToList()
+            };
+
+            return new ObjectResult(errorResponse)
+            {
+                StatusCode = (int)(statusCode)
+            };
         }
     }
 }

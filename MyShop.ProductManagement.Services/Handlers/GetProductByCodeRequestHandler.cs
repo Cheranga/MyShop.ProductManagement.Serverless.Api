@@ -1,6 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
+using MyShop.ProductManagement.Application.Constants;
 using MyShop.ProductManagement.Application.DataAccess;
 using MyShop.ProductManagement.Application.Requests;
 using MyShop.ProductManagement.Domain;
@@ -20,6 +21,17 @@ namespace MyShop.ProductManagement.Application.Handlers
         {
             var query = new GetProductByCodeQuery(request.CorrelationId, request.ProductCode);
             var operation = await _mediator.Send(query, cancellationToken);
+
+            if (!operation.Status)
+            {
+                return operation;
+            }
+
+            var product = operation.Data;
+            if (product == null)
+            {
+                return Result<Product>.Failure(ErrorCodes.ProductNotFound, "Product not found.");
+            }
 
             return operation;
         }

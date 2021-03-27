@@ -23,7 +23,7 @@ namespace MyShop.ProductManagement.Application.Handlers
 
             if (!getProductOperation.Status)
             {
-                return Result<Product>.Failure(getProductOperation.Validation);
+                return Result<Product>.Failure(getProductOperation.ErrorCode, getProductOperation.Validation);
             }
 
             var product = getProductOperation.Data;

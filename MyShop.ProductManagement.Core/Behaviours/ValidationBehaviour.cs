@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.Logging;
+using MyShop.ProductManagement.Domain.Constants;
 using MyShop.ProductManagement.Domain.Extensions;
 using MyShop.ProductManagement.Domain.Validators;
 
@@ -33,7 +34,7 @@ namespace MyShop.ProductManagement.Domain.Behaviours
             if (!validationResult.IsValid)
             {
                 _logger.LogWarning("Validation error: {errors}", validationResult.ToErrorMessage());
-                return Result<TResponse>.Failure(validationResult);
+                return Result<TResponse>.Failure(ErrorCodes.ValidationError, validationResult);
             }
 
             var operation = await next();

@@ -18,9 +18,9 @@ namespace MyShop.ProductManagement.Serverless.Api.HealthChecks
 
         public async Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context, CancellationToken cancellationToken = new CancellationToken())
         {
-            var getProductByCodeRequest = new GetProductByCodeRequest("HEALTH_CHECK", "BLAHBLAH");
+            var databaseHealthCheckRequest = new DatabaseHealthCheckRequest("HEALTH_CHECK");
 
-            var operation = await _mediator.Send(getProductByCodeRequest, cancellationToken);
+            var operation = await _mediator.Send(databaseHealthCheckRequest, cancellationToken);
 
             if (operation.Status)
             {
