@@ -10,6 +10,7 @@ using MyShop.ProductManagement.Application;
 using MyShop.ProductManagement.Application.Responses;
 using MyShop.ProductManagement.DataAccess;
 using MyShop.ProductManagement.Domain;
+using MyShop.ProductManagement.Messaging;
 using MyShop.ProductManagement.Serverless.Api;
 using MyShop.ProductManagement.Serverless.Api.Dto;
 using MyShop.ProductManagement.Serverless.Api.HealthChecks;
@@ -33,6 +34,7 @@ namespace MyShop.ProductManagement.Serverless.Api
             RegisterApiServices(services)
                 .UseProductsServices(configuration)
                 .UseProductsDataAccess(configuration)
+                .UseMessagingServices(configuration)
                 .RegisterDomainServices();
         }
 
@@ -82,7 +84,10 @@ namespace MyShop.ProductManagement.Serverless.Api
         {
             var mediatorAssemblies = new[]
             {
-                typeof(Startup).Assembly, typeof(Bootstrapper).Assembly, typeof(DataAccess.Bootstrapper).Assembly
+                typeof(Startup).Assembly, 
+                typeof(Bootstrapper).Assembly, 
+                typeof(DataAccess.Bootstrapper).Assembly,
+                typeof(Messaging.Bootstrapper).Assembly
             };
             services.AddMediatR(mediatorAssemblies);
         }

@@ -30,7 +30,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Readme.md = Readme.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyShop.ProductManagement.DataMigration", "MyShop.ProductManagement.DataMigration\MyShop.ProductManagement.DataMigration.csproj", "{679F504C-3DF9-4525-BADB-60501851BA5C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyShop.ProductManagement.DataMigration", "MyShop.ProductManagement.DataMigration\MyShop.ProductManagement.DataMigration.csproj", "{679F504C-3DF9-4525-BADB-60501851BA5C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyShop.ProductManagement.Messaging", "MyShop.ProductManagement.Messaging\MyShop.ProductManagement.Messaging.csproj", "{3709E3DC-DB4D-42E0-B55A-857CA3DFD107}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -62,6 +64,10 @@ Global
 		{679F504C-3DF9-4525-BADB-60501851BA5C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{679F504C-3DF9-4525-BADB-60501851BA5C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{679F504C-3DF9-4525-BADB-60501851BA5C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3709E3DC-DB4D-42E0-B55A-857CA3DFD107}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3709E3DC-DB4D-42E0-B55A-857CA3DFD107}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3709E3DC-DB4D-42E0-B55A-857CA3DFD107}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3709E3DC-DB4D-42E0-B55A-857CA3DFD107}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -75,6 +81,7 @@ Global
 		{6287F563-78EB-48E6-80A6-9BF7780DB85D} = {3D623973-F15E-4BCE-9C66-AFE73FB0E20C}
 		{F4E187F8-7859-4093-8FFC-7BD3875CB62F} = {3D623973-F15E-4BCE-9C66-AFE73FB0E20C}
 		{679F504C-3DF9-4525-BADB-60501851BA5C} = {D86CE03D-71F9-4A4C-90B7-5184AF8CEDE2}
+		{3709E3DC-DB4D-42E0-B55A-857CA3DFD107} = {D86CE03D-71F9-4A4C-90B7-5184AF8CEDE2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {AB3000D8-8868-4E57-93EE-CD7029677490}

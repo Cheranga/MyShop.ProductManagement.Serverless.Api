@@ -2,9 +2,12 @@
 using System.Threading.Tasks;
 using MediatR;
 using MyShop.ProductManagement.Application.DataAccess;
+using MyShop.ProductManagement.Application.Messages;
 using MyShop.ProductManagement.Application.Requests;
 using MyShop.ProductManagement.Application.Responses;
 using MyShop.ProductManagement.Domain;
+using MyShop.ProductManagement.Domain.Constants;
+using ErrorCodes = MyShop.ProductManagement.Application.Constants.ErrorCodes;
 
 namespace MyShop.ProductManagement.Application.Handlers
 {
@@ -38,22 +41,24 @@ namespace MyShop.ProductManagement.Application.Handlers
 
         private async Task<Result<GetProductResponse>> UpdateProductAsync(UpsertProductRequest request, CancellationToken cancellationToken)
         {
-            var updateCommand = new UpdateProductCommand(request.CorrelationId, request.ProductCode, request.ProductName);
-            var operation = await _mediator.Send(updateCommand, cancellationToken);
-
-            if (!operation.Status)
+            var updateProductMessage = new UpdateProductMessage
             {
-                return Result<GetProductResponse>.Failure(operation.ErrorCode, operation.Validation);
-            }
-
-            var product = operation.Data;
-            var getProductResponse = new GetProductResponse
-            {
-                ProductCode = product.ProductCode,
-                ProductName = product.ProductName
+                CorrelationId = request.CorrelationId,
+                ProductCode = request.ProductCode,
+                ProductName = request.ProductName
             };
 
-            return Result<GetProductResponse>.Success(getProductResponse);
+            var operation = await _mediator.Send(updateProductMessage, cancellationToken);
+            if (operation.Status)
+            {
+                return Result<GetProductResponse>.Success(new GetProductResponse
+                {
+                    ProductCode = request.ProductCode,
+                    ProductName = request.ProductName
+                });
+            }
+
+            return Result<GetProductResponse>.Failure(operation.ErrorCode, operation.Validation);
         }
 
         private async Task<Result<GetProductResponse>> InsertProductAsync(UpsertProductRequest request, CancellationToken cancellationToken)

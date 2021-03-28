@@ -4,33 +4,31 @@ namespace MyShop.ProductManagement.Domain
 {
     public class Result
     {
-        public bool Status => Validation != null && Validation.IsValid;
+        public string ErrorCode { get; set; }
         public ValidationResult Validation { get; set; } = new ValidationResult();
+        public bool Status => Validation != null && Validation.IsValid;
 
         public static Result Success()
         {
-            return new Result();
-        }
-
-        public static Result Failure(params ValidationFailure[] failures)
-        {
             return new Result
             {
-                Validation = new ValidationResult(failures)
+                ErrorCode = string.Empty,
+                Validation = new ValidationResult()
             };
         }
 
-        public static Result Failure(ValidationResult validationResult)
+        public static Result Failure(string errorCode, ValidationResult validationResult)
         {
             return new Result
             {
+                ErrorCode = errorCode,
                 Validation = validationResult
             };
         }
 
-        public static Result Failure(string field, string failure)
+        public static Result Failure(string errorCode, string errorMessage)
         {
-            return Failure(new ValidationFailure(field, failure));
+            return Failure(errorCode, new ValidationResult(new[] { new ValidationFailure("", errorMessage) }));
         }
     }
 
