@@ -78,7 +78,7 @@ steps:
         -planSku "$(planSku)" 
         -planTier "$(planTier)" 
         -funcAppName "$(funcAppName)" 
-        -environmentName "$(environmentName)"
+        -environmentName "$(environmentName)" 
         -sbWriteConnectionString "$(sbWriteConnectionString)" 
         -sbReadConnectionString "$(sbReadConnectionString)" 
 
