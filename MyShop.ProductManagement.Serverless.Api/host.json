@@ -25,5 +25,12 @@
         "url": "https://cheranga.mit-license.org/"
       }
     }
+  },
+  "extensions": {
+    "serviceBus": {
+      "messageHandlerOptions": {
+        "autoComplete": false
+      }
+    }
   }
 }

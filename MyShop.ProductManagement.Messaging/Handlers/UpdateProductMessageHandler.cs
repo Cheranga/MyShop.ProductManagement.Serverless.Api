@@ -34,6 +34,30 @@ namespace MyShop.ProductManagement.Messaging.Handlers
         }
     }
 
+    public class CreateProductMessageHandler : IRequestHandler<CreateProductMessage, Result>
+    {
+        private readonly IMessagePublisher _serviceBusMessagePublisher;
+        private readonly ILogger<CreateProductMessageHandler> _logger;
+
+        public CreateProductMessageHandler(IMessagePublisher serviceBusMessagePublisher, ILogger<CreateProductMessageHandler> logger)
+        {
+            _serviceBusMessagePublisher = serviceBusMessagePublisher;
+            _logger = logger;
+        }
+
+        public Task<Result> Handle(CreateProductMessage request, CancellationToken cancellationToken)
+        {
+            var message = new CreateProductServiceBusMessage
+            {
+                CorrelationId = request.CorrelationId,
+                ProductCode = request.ProductCode,
+                ProductName = request.ProductName
+            };
+
+            return _serviceBusMessagePublisher.PublishAsync(message);
+        }
+    }
+
     public abstract class MessageBase
     {
         public string CorrelationId { get; set; }
@@ -41,6 +65,12 @@ namespace MyShop.ProductManagement.Messaging.Handlers
 
 
     public class UpdateProductServiceBusMessage : MessageBase
+    {
+        public string ProductCode { get; set; }
+        public string ProductName { get; set; }
+    }
+
+    public class CreateProductServiceBusMessage : MessageBase
     {
         public string ProductCode { get; set; }
         public string ProductName { get; set; }

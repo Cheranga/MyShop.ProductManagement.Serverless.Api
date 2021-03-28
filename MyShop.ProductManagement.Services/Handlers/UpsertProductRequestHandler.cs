@@ -63,22 +63,24 @@ namespace MyShop.ProductManagement.Application.Handlers
 
         private async Task<Result<GetProductResponse>> InsertProductAsync(UpsertProductRequest request, CancellationToken cancellationToken)
         {
-            var insertCommand = new InsertProductCommand(request.CorrelationId, request.ProductCode, request.ProductName);
-            var operation = await _mediator.Send(insertCommand, cancellationToken);
-
-            if (!operation.Status)
+            var createProductMessage = new CreateProductMessage
             {
-                return Result<GetProductResponse>.Failure(operation.ErrorCode, operation.Validation);
-            }
-
-            var product = operation.Data;
-            var getProductResponse = new GetProductResponse
-            {
-                ProductCode = product.ProductCode,
-                ProductName = product.ProductName
+                CorrelationId = request.CorrelationId,
+                ProductCode = request.ProductCode,
+                ProductName = request.ProductName
             };
 
-            return Result<GetProductResponse>.Success(getProductResponse);
+            var operation = await _mediator.Send(createProductMessage, cancellationToken);
+            if (operation.Status)
+            {
+                return Result<GetProductResponse>.Success(new GetProductResponse
+                {
+                    ProductCode = request.ProductCode,
+                    ProductName = request.ProductName
+                });
+            }
+
+            return Result<GetProductResponse>.Failure(operation.ErrorCode, operation.Validation);
         }
     }
 }

@@ -7,5 +7,8 @@ namespace MyShop.ProductManagement.Application.Messages
     public class CreateProductMessage : IRequest<Result>, IValidatableRequest
     {
         public string CorrelationId { get; set; }
+
+        public string ProductCode { get; set; }
+        public string ProductName { get; set; }
     }
 }
