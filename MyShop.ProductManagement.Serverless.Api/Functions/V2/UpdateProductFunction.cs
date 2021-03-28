@@ -12,12 +12,13 @@ namespace MyShop.ProductManagement.Serverless.Api.Functions.V2
     public class UpdateProductFunction
     {
         [FunctionName(nameof(UpdateProductFunction))]
-        public async Task Run([ServiceBusTrigger("%ServiceBusConfig:WriteTopic%", "%ServiceBusConfig:UpdateProductSubscription%", Connection = "ServiceBusConfig:ReadConnectionString")] Message message,
-            MessageReceiver messageReceiver, string lockToken)
+        public async Task Run(
+            [ServiceBusTrigger("%ServiceBusConfig:WriteTopic%", "%ServiceBusConfig:UpdateProductSubscription%", Connection = "ServiceBusConfig:ReadConnectionString", IsSessionsEnabled = true)]
+            Message message,
+            IMessageSession messageSession, string lockToken)
         {
-            await Task.Delay(TimeSpan.FromSeconds(2));
+            await messageSession.CompleteAsync(lockToken);
 
-            await messageReceiver.DeadLetterAsync(lockToken, "Testing messages been sent to DLQ.");
         }
     }
 }

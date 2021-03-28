@@ -24,7 +24,7 @@ namespace MyShop.ProductManagement.Messaging
                 return new TopicClient(serviceBusConfig.WriteConnectionString, serviceBusConfig.WriteTopic);
             });
 
-            services.AddTransient<IMessagePublisher, MessagePublisher>();
+            services.AddTransient<IOrderedMessagePublisher, OrderedMessagePublisher>();
 
             return services;
         }

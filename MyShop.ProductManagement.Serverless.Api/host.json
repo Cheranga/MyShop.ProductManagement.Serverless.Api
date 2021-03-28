@@ -30,7 +30,11 @@
     "serviceBus": {
       "messageHandlerOptions": {
         "autoComplete": false
-      }
+      },
+      "sessionHandlerOptions": {
+        "autoComplete": false
+      } 
     }
+
   }
 }

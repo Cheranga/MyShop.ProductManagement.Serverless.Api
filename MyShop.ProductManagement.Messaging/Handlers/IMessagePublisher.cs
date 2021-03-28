@@ -3,8 +3,8 @@ using MyShop.ProductManagement.Domain;
 
 namespace MyShop.ProductManagement.Messaging.Handlers
 {
-    public interface IMessagePublisher
+    public interface IOrderedMessagePublisher
     {
-        Task<Result> PublishAsync<TMessage>(TMessage message) where TMessage : MessageBase;
+        Task<Result> PublishAsync<TMessage>(TMessage message) where TMessage : OrderedMessageBase;
     }
 }

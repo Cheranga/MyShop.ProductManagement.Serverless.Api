@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -12,10 +13,10 @@ namespace MyShop.ProductManagement.Messaging.Handlers
 {
     public class UpdateProductMessageHandler : IRequestHandler<UpdateProductMessage, Result>
     {
-        private readonly IMessagePublisher _serviceBusMessagePublisher;
+        private readonly IOrderedMessagePublisher _serviceBusMessagePublisher;
         private readonly ILogger<UpdateProductMessageHandler> _logger;
 
-        public UpdateProductMessageHandler(IMessagePublisher serviceBusMessagePublisher, ILogger<UpdateProductMessageHandler> logger)
+        public UpdateProductMessageHandler(IOrderedMessagePublisher serviceBusMessagePublisher, ILogger<UpdateProductMessageHandler> logger)
         {
             _serviceBusMessagePublisher = serviceBusMessagePublisher;
             _logger = logger;
@@ -36,10 +37,10 @@ namespace MyShop.ProductManagement.Messaging.Handlers
 
     public class CreateProductMessageHandler : IRequestHandler<CreateProductMessage, Result>
     {
-        private readonly IMessagePublisher _serviceBusMessagePublisher;
+        private readonly IOrderedMessagePublisher _serviceBusMessagePublisher;
         private readonly ILogger<CreateProductMessageHandler> _logger;
 
-        public CreateProductMessageHandler(IMessagePublisher serviceBusMessagePublisher, ILogger<CreateProductMessageHandler> logger)
+        public CreateProductMessageHandler(IOrderedMessagePublisher serviceBusMessagePublisher, ILogger<CreateProductMessageHandler> logger)
         {
             _serviceBusMessagePublisher = serviceBusMessagePublisher;
             _logger = logger;
@@ -58,22 +59,34 @@ namespace MyShop.ProductManagement.Messaging.Handlers
         }
     }
 
-    public abstract class MessageBase
+    public abstract class OrderedMessageBase
     {
         public string CorrelationId { get; set; }
+
+        public abstract string GetSessionId();
     }
 
 
-    public class UpdateProductServiceBusMessage : MessageBase
+    public class UpdateProductServiceBusMessage : OrderedMessageBase
     {
         public string ProductCode { get; set; }
         public string ProductName { get; set; }
+
+        public override string GetSessionId()
+        {
+            return ProductCode;
+        }
     }
 
-    public class CreateProductServiceBusMessage : MessageBase
+    public class CreateProductServiceBusMessage : OrderedMessageBase
     {
         public string ProductCode { get; set; }
         public string ProductName { get; set; }
+        
+        public override string GetSessionId()
+        {
+            return ProductCode;
+        }
     }
 
 }

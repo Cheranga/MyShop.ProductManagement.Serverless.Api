@@ -15,6 +15,7 @@ using MyShop.ProductManagement.Serverless.Api;
 using MyShop.ProductManagement.Serverless.Api.Dto;
 using MyShop.ProductManagement.Serverless.Api.HealthChecks;
 using MyShop.ProductManagement.Serverless.Api.ResponseFormatters;
+using MyShop.ProductManagement.Serverless.Api.Services;
 using Serilog;
 using Serilog.Events;
 using Bootstrapper = MyShop.ProductManagement.Application.Bootstrapper;
@@ -40,6 +41,7 @@ namespace MyShop.ProductManagement.Serverless.Api
 
         private static IServiceCollection RegisterApiServices(IServiceCollection services)
         {
+            RegisterServices(services);
             RegisterLogging(services);
             RegisterResponseFormatters(services);
             RegisterMediators(services);
@@ -47,6 +49,11 @@ namespace MyShop.ProductManagement.Serverless.Api
             RegisterValidators(services);
 
             return services;
+        }
+
+        private static void RegisterServices(IServiceCollection services)
+        {
+            services.AddTransient<IMessageReader, MessageReader>();
         }
 
         private static void RegisterLogging(IServiceCollection services)

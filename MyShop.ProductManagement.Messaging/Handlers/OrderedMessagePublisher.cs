@@ -10,18 +10,18 @@ using Newtonsoft.Json;
 
 namespace MyShop.ProductManagement.Messaging.Handlers
 {
-    public class MessagePublisher : IMessagePublisher
+    public class OrderedMessagePublisher : IOrderedMessagePublisher
     {
         private readonly ITopicClient _topicClient;
-        private readonly ILogger<MessagePublisher> _logger;
+        private readonly ILogger<OrderedMessagePublisher> _logger;
 
-        public MessagePublisher(ITopicClient topicClient, ILogger<MessagePublisher> logger)
+        public OrderedMessagePublisher(ITopicClient topicClient, ILogger<OrderedMessagePublisher> logger)
         {
             _topicClient = topicClient;
             _logger = logger;
         }
 
-        public async Task<Result> PublishAsync<TMessage>(TMessage message) where TMessage : MessageBase
+        public async Task<Result> PublishAsync<TMessage>(TMessage message) where TMessage : OrderedMessageBase
         {   
             try
             {
@@ -29,6 +29,7 @@ namespace MyShop.ProductManagement.Messaging.Handlers
                 var serviceBusMessage = new Message(messageBytes)
                 {
                     Label = message.GetType().Name,
+                    SessionId = message.GetSessionId(),
                     ContentType = "application/json",
                     CorrelationId = message.CorrelationId
                 };
