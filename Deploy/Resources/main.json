@@ -73,6 +73,14 @@
         "funcAppName": {
             "type": "string",
             "defaultValue": "TBD"
+        },
+        "sbWriteConnectionString": {
+            "type": "securestring",
+            "defaultValue": "TBD"
+        },
+        "sbReadConnectionString": {
+            "type": "securestring",
+            "defaultValue": "TBD"
         }
     },
     "variables": {
@@ -208,11 +216,17 @@
                     },
                     "dbConnectionString": {
                         "value": "[reference(variables('dbDeployment')).outputs.connectionString.value]"
-                    }                    
+                    },
+                    "sbWriteConnectionString": {
+                        "value": "[parameters('sbWriteConnectionString')]"
+                    },
+                    "sbReadConnectionString": {
+                        "value": "[parameters('sbReadConnectionString')]"
+                    }
                 }
             },
-            "dependsOn": [                
-                "[variables('dbDeployment')]",                
+            "dependsOn": [
+                "[variables('dbDeployment')]",
                 "[variables('funcAppDeployment')]"
             ]
         },

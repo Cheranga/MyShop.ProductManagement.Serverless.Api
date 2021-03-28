@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 using MediatR;
 using Microsoft.Azure.ServiceBus;
-using Microsoft.Azure.ServiceBus.Core;
 using Microsoft.Azure.WebJobs;
 using MyShop.ProductManagement.Application.DataAccess;
 using MyShop.ProductManagement.Messaging.Handlers;
@@ -22,7 +21,7 @@ namespace MyShop.ProductManagement.Serverless.Api.Functions.V2
 
         [FunctionName(nameof(CreateProductFunction))]
         public async Task Run(
-            [ServiceBusTrigger("%ServiceBusConfig:WriteTopic%", "%ServiceBusConfig:CreateProductSubscription%", Connection = "ServiceBusConfig:ReadConnectionString", IsSessionsEnabled = true)] 
+            [ServiceBusTrigger("%ServiceBusConfig:WriteTopic%", "%ServiceBusConfig:CreateProductSubscription%", Connection = "ServiceBusConfig:ReadConnectionString", IsSessionsEnabled = true)]
             Message message,
             IMessageSession messageSession, string lockToken)
         {

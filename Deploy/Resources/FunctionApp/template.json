@@ -32,13 +32,27 @@
             "type": "securestring",
             "defaultValue": "TBD"
         },
-        "appInsightsKey":{
+        "appInsightsKey": {
             "type": "securestring",
-            "defaultValue":"TBD"
+            "defaultValue": "TBD"
+        },
+        "productsTopic": {
+            "type": "string",
+            "defaultValue": "serverless-products"
+        },
+        "createSubscription": {
+            "type": "string",
+            "defaultValue": "create"
+        },
+        "updateSubscription": {
+            "type": "string",
+            "defaultValue": "update"
         }
     },
     "variables": {
         "dbConnectionString": "[concat('@Microsoft.KeyVault(SecretUri=https://', parameters('keyVaultName'), '.vault.azure.net/secrets/dbConnectionString/)')]",
+        "sbWriteConnectionString": "[concat('@Microsoft.KeyVault(SecretUri=https://', parameters('keyVaultName'), '.vault.azure.net/secrets/sbWriteConnectionString/)')]",
+        "sbReadConnectionString": "[concat('@Microsoft.KeyVault(SecretUri=https://', parameters('keyVaultName'), '.vault.azure.net/secrets/sbReadConnectionString/)')]",
         "timeZone": "AUS Eastern Standard Time"
     },
     "resources": [
@@ -126,7 +140,12 @@
                         "APPINSIGHTS_INSTRUMENTATIONKEY": "[parameters('appInsightsKey')]",
                         "FUNCTIONS_WORKER_RUNTIME": "dotnet",
                         "WEBSITE_TIME_ZONE": "[variables('timeZone')]",
-                        "WEBSITE_ADD_SITENAME_BINDINGS_IN_APPHOST_CONFIG": 1
+                        "WEBSITE_ADD_SITENAME_BINDINGS_IN_APPHOST_CONFIG": 1,
+                        "ServiceBusConfig:WriteConnectionString": "[variables('sbWriteConnectionString')]",
+                        "ServiceBusConfig:ReadConnectionString": "[variables('sbReadConnectionString')]",
+                        "ServiceBusConfig:WriteTopic": "[parameters('productsTopic')]",
+                        "ServiceBusConfig:UpdateProductSubscription": "[parameters('updateSubscription')]",
+                        "ServiceBusConfig:CreateProductSubscription": "[parameters('createSubscription')]"
                     }
                 }
             ]

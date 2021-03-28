@@ -34,6 +34,8 @@ namespace MyShop.ProductManagement.Messaging.Handlers
                     CorrelationId = message.CorrelationId
                 };
 
+                serviceBusMessage.UserProperties.Add("MessageType", message.MessageType);
+
                 await _topicClient.SendAsync(serviceBusMessage);
                 await _topicClient.CloseAsync();
 

@@ -13,19 +13,27 @@
     "dbConnectionString": {
       "type": "securestring",
       "defaultValue": "TBD"
+    },
+    "sbWriteConnectionString": {
+      "type": "securestring",
+      "defaultValue": "TBD"
+    },
+    "sbReadConnectionString": {
+      "type": "securestring",
+      "defaultValue": "TBD"
     }
   },
   "functions": [],
   "variables": {
     "keyVaultName": "[concat('kv-', replace(parameters('functionAppName'),'-',''))]",
-    "deployedFunctionAppName":"[concat('fn-',parameters('functionAppName'))]"
+    "deployedFunctionAppName": "[concat('fn-',parameters('functionAppName'))]"
   },
   "resources": [
     {
       "type": "Microsoft.KeyVault/vaults",
       "apiVersion": "2016-10-01",
       "name": "[variables('keyVaultName')]",
-      "location": "[parameters('rgLocation')]",     
+      "location": "[parameters('rgLocation')]",
       "properties": {
         "enabledForDeployment": true,
         "enabledForTemplateDeployment": true,
@@ -73,7 +81,29 @@
           "properties": {
             "value": "[parameters('dbConnectionString')]"
           }
-        }        
+        },
+        {
+          "type": "secrets",
+          "name": "sbWriteConnectionString",
+          "apiVersion": "2016-10-01",
+          "dependsOn": [
+            "[resourceId('Microsoft.KeyVault/vaults/', variables('keyVaultName'))]"
+          ],
+          "properties": {
+            "value": "[parameters('sbWriteConnectionString')]"
+          }
+        },
+        {
+          "type": "secrets",
+          "name": "sbReadConnectionString",
+          "apiVersion": "2016-10-01",
+          "dependsOn": [
+            "[resourceId('Microsoft.KeyVault/vaults/', variables('keyVaultName'))]"
+          ],
+          "properties": {
+            "value": "[parameters('sbReadConnectionString')]"
+          }
+        }
       ]
     }
   ],
