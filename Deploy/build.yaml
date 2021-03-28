@@ -35,24 +35,24 @@ steps:
   displayName: Create ARM template artifacts
   artifact: deploy   
 
-  - task: DotNetCoreCLI@2
-    displayName: "Publish database migration console app"
-    inputs:
-      command: publish 
-      arguments: -r win-x64 -p:PublishSingleFile=True --self-contained false -o $(Build.ArtifactStagingDirectory)
-      projects: '**/MyShop.ProductManagement.DataMigration.csproj'
-      publishWebProjects: false
-      zipAfterPublish: False
+- task: DotNetCoreCLI@2
+  displayName: "Publish database migration console app"
+  inputs:
+    command: publish 
+    arguments: -r win-x64 -p:PublishSingleFile=True --self-contained false -o $(Build.ArtifactStagingDirectory)
+    projects: '**/MyShop.ProductManagement.DataMigration.csproj'
+    publishWebProjects: false
+    zipAfterPublish: False
     enabled: true  
 
-  - task: PublishBuildArtifacts@1
-    displayName: "Create artifact for database migration"
-    inputs:
-      pathtoPublish: "$(Build.ArtifactStagingDirectory)/MyShop.ProductManagement.DataMigration/MyShop.ProductManagement.DataMigration.exe"
-      artifactName: "DbConsoleApp"              
+- task: PublishBuildArtifacts@1
+  displayName: "Create artifact for database migration"
+  inputs:
+    pathtoPublish: "$(Build.ArtifactStagingDirectory)/MyShop.ProductManagement.DataMigration/MyShop.ProductManagement.DataMigration.exe"
+    artifactName: "DbConsoleApp"              
 
-  - task: PublishBuildArtifacts@1
-    displayName: "Create artifact for scripts"
-    inputs:
-      pathtoPublish: Deploy/Scripts
-      artifactName: "scripts"   
+- task: PublishBuildArtifacts@1
+  displayName: "Create artifact for scripts"
+  inputs:
+    pathtoPublish: Deploy/Scripts
+    artifactName: "scripts"   
