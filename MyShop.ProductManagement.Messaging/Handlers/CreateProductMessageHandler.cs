@@ -9,8 +9,8 @@ namespace MyShop.ProductManagement.Messaging.Handlers
 {
     public class CreateProductMessageHandler : IRequestHandler<CreateProductMessage, Result>
     {
-        private readonly IOrderedMessagePublisher _serviceBusMessagePublisher;
         private readonly ILogger<CreateProductMessageHandler> _logger;
+        private readonly IOrderedMessagePublisher _serviceBusMessagePublisher;
 
         public CreateProductMessageHandler(IOrderedMessagePublisher serviceBusMessagePublisher, ILogger<CreateProductMessageHandler> logger)
         {

@@ -4,9 +4,9 @@
     {
         public string CorrelationId { get; set; }
 
-        public abstract string GetSessionId();
-
 
         public abstract string MessageType { get; set; }
+
+        public abstract string GetSessionId();
     }
 }

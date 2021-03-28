@@ -9,7 +9,7 @@ using Newtonsoft.Json;
 
 namespace MyShop.ProductManagement.Serverless.Api.Services
 {
-    public class MessageReader: IMessageReader
+    public class MessageReader : IMessageReader
     {
         private readonly ILogger<MessageReader> _logger;
 

@@ -91,8 +91,8 @@ namespace MyShop.ProductManagement.Serverless.Api
         {
             var mediatorAssemblies = new[]
             {
-                typeof(Startup).Assembly, 
-                typeof(Bootstrapper).Assembly, 
+                typeof(Startup).Assembly,
+                typeof(Bootstrapper).Assembly,
                 typeof(DataAccess.Bootstrapper).Assembly,
                 typeof(Messaging.Bootstrapper).Assembly
             };

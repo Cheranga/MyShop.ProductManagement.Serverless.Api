@@ -6,8 +6,6 @@ using MyShop.ProductManagement.Application.Messages;
 using MyShop.ProductManagement.Application.Requests;
 using MyShop.ProductManagement.Application.Responses;
 using MyShop.ProductManagement.Domain;
-using MyShop.ProductManagement.Domain.Constants;
-using ErrorCodes = MyShop.ProductManagement.Application.Constants.ErrorCodes;
 
 namespace MyShop.ProductManagement.Application.Handlers
 {

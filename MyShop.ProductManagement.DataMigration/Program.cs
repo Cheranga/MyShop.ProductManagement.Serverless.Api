@@ -5,9 +5,9 @@ using DbUp;
 
 namespace MyShop.ProductManagement.DataMigration
 {
-    class Program
+    internal class Program
     {
-        static int Main(string[] args)
+        private static int Main(string[] args)
         {
             if (args == null || !args.Any())
             {

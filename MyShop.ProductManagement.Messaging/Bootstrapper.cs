@@ -17,7 +17,7 @@ namespace MyShop.ProductManagement.Messaging
                 var config = provider.GetRequiredService<IOptionsSnapshot<ServiceBusConfig>>().Value;
                 return config;
             });
-            
+
             services.AddTransient<ITopicClient, TopicClient>(provider =>
             {
                 var serviceBusConfig = provider.GetRequiredService<ServiceBusConfig>();

@@ -5,15 +5,14 @@ using Microsoft.Azure.ServiceBus;
 using Microsoft.Extensions.Logging;
 using MyShop.ProductManagement.Application.Constants;
 using MyShop.ProductManagement.Domain;
-using MyShop.ProductManagement.Messaging.Configs;
 using Newtonsoft.Json;
 
 namespace MyShop.ProductManagement.Messaging.Handlers
 {
     public class OrderedMessagePublisher : IOrderedMessagePublisher
     {
-        private readonly ITopicClient _topicClient;
         private readonly ILogger<OrderedMessagePublisher> _logger;
+        private readonly ITopicClient _topicClient;
 
         public OrderedMessagePublisher(ITopicClient topicClient, ILogger<OrderedMessagePublisher> logger)
         {
@@ -22,7 +21,7 @@ namespace MyShop.ProductManagement.Messaging.Handlers
         }
 
         public async Task<Result> PublishAsync<TMessage>(TMessage message) where TMessage : OrderedMessageBase
-        {   
+        {
             try
             {
                 var messageBytes = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(message));

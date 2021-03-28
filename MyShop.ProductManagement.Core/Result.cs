@@ -28,7 +28,7 @@ namespace MyShop.ProductManagement.Domain
 
         public static Result Failure(string errorCode, string errorMessage)
         {
-            return Failure(errorCode, new ValidationResult(new[] { new ValidationFailure("", errorMessage) }));
+            return Failure(errorCode, new ValidationResult(new[] {new ValidationFailure("", errorMessage)}));
         }
     }
 

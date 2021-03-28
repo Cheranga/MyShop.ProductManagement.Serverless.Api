@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.Extensions.Logging;
@@ -13,8 +9,8 @@ namespace MyShop.ProductManagement.Messaging.Handlers
 {
     public class UpdateProductMessageHandler : IRequestHandler<UpdateProductMessage, Result>
     {
-        private readonly IOrderedMessagePublisher _serviceBusMessagePublisher;
         private readonly ILogger<UpdateProductMessageHandler> _logger;
+        private readonly IOrderedMessagePublisher _serviceBusMessagePublisher;
 
         public UpdateProductMessageHandler(IOrderedMessagePublisher serviceBusMessagePublisher, ILogger<UpdateProductMessageHandler> logger)
         {
