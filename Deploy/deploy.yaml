@@ -95,6 +95,35 @@ steps:
         Write-Host "##vso[task.setvariable variable=functionMasterKey]$functionMasterKey"
         # Write-Host "##vso[task.setvariable variable=stagingFunctionMasterKey]$stagingFunctionMasterKey"
 
+  - task: AzurePowerShell@2
+    displayName: "Setup firewall rule for build agent"
+    inputs:
+      azureSubscription: "$(azureSubscription)"
+      ScriptPath: "$(Pipeline.Workspace)/scripts/setupfirewall.ps1"
+      ScriptArguments: "$(serverName) $(rgName)"
+      azurePowerShellVersion: LatestVersion
+
+  - task: AzureCLI@2
+    displayName: "Migrate the database"
+    inputs:
+      azureSubscription: "$(azureSubscription)"
+      scriptType: "pscore"
+      scriptLocation: "inlineScript"
+      inlineScript: |
+        $dbDeployment = "$(serverName)"+"-"+"${{parameters.buildNumber}}"+"-deployment"
+        $testConnectionString=$(az deployment group show -g "$(rgName)" -n "$dbDeployment" --query properties.outputs.connectionString.value)
+
+        # echo $testConnectionString
+        $(Pipeline.Workspace)/DbConsoleApp/MyShop.ProductManagement.DataMigration.exe $testConnectionString
+
+  - task: AzurePowerShell@2
+    displayName: "Remove firewall rule for build agent"
+    inputs:
+      azureSubscription: "$(azureSubscription)"
+      ScriptPath: "$(Pipeline.Workspace)/scripts/removefirewall.ps1"
+      ScriptArguments: "$(serverName) $(rgName)"
+      azurePowerShellVersion: LatestVersion        
+
   - task: AzureAppServiceManage@0
     displayName: 'Stop Azure App Service (Staging)'
     inputs:
@@ -111,7 +140,7 @@ steps:
       azureSubscription: '$(azureSubscription)'    
       appType: functionApp
       WebAppName: "fn-$(funcAppName)-$(environmentName)"
-      package: '$(Pipeline.Workspace)/drop/$(Build.BuildId).zip'
+      package: '$(Pipeline.Workspace)/webapi/$(Build.BuildId).zip'
       enableCustomDeployment: true
       DeploymentType: zipDeploy
       JSONFiles: '**/host.json' 
