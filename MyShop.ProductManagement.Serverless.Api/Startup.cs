@@ -103,6 +103,8 @@ namespace MyShop.ProductManagement.Serverless.Api
         {
             services.AddTransient<IRenderAction<GetProductByCodeDto, Result<GetProductResponse>>, DisplayProductFormatter>();
             services.AddTransient<IRenderAction<UpsertProductDto, Result<GetProductResponse>>, UpsertProductFormatter>();
+            services.AddTransient<IRenderAction<InsertProductDto, Result<GetProductResponse>>, InsertProductFormatter>();
+            services.AddTransient<IRenderAction<UpdateProductDto, Result<GetProductResponse>>, UpdateProductFormatter>();
         }
 
         protected virtual IConfigurationRoot GetConfigurationRoot(IFunctionsHostBuilder builder)

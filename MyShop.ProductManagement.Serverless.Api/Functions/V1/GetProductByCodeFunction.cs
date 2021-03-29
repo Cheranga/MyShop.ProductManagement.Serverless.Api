@@ -17,20 +17,20 @@ using MyShop.ProductManagement.Serverless.Api.ResponseFormatters;
 
 namespace MyShop.ProductManagement.Serverless.Api.Functions.V1
 {
-    public class GetProductFunction
+    public class GetProductByCodeFunction
     {
-        private readonly ILogger<GetProductFunction> _logger;
+        private readonly ILogger<GetProductByCodeFunction> _logger;
         private readonly IMediator _mediator;
         private readonly IRenderAction<GetProductByCodeDto, Result<GetProductResponse>> _responseFormatter;
 
-        public GetProductFunction(IMediator mediator, IRenderAction<GetProductByCodeDto, Result<GetProductResponse>> responseFormatter, ILogger<GetProductFunction> logger)
+        public GetProductByCodeFunction(IMediator mediator, IRenderAction<GetProductByCodeDto, Result<GetProductResponse>> responseFormatter, ILogger<GetProductByCodeFunction> logger)
         {
             _mediator = mediator;
             _responseFormatter = responseFormatter;
             _logger = logger;
         }
 
-        [FunctionName(nameof(GetProductFunction))]
+        [FunctionName(nameof(GetProductByCodeFunction))]
         [OpenApiOperation("getProductByProductCode", "product", Summary = "Get product by product code", Description = "Get the product using product code.", Visibility = OpenApiVisibilityType.Important)]
         [OpenApiParameter("productCode", In = ParameterLocation.Path, Required = true, Type = typeof(string), Summary = "Product code", Description = "Need the product code to find the product", Visibility = OpenApiVisibilityType.Important)]
         [OpenApiParameter("correlationId", In = ParameterLocation.Header, Required = true, Type = typeof(string), Summary = "Correlation id", Description = "This will be used to track the operation", Visibility = OpenApiVisibilityType.Important)]
