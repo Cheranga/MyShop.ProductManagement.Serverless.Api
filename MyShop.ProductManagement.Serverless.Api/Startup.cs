@@ -10,10 +10,12 @@ using MyShop.ProductManagement.Application;
 using MyShop.ProductManagement.Application.Responses;
 using MyShop.ProductManagement.DataAccess;
 using MyShop.ProductManagement.Domain;
+using MyShop.ProductManagement.Messaging;
 using MyShop.ProductManagement.Serverless.Api;
 using MyShop.ProductManagement.Serverless.Api.Dto;
 using MyShop.ProductManagement.Serverless.Api.HealthChecks;
 using MyShop.ProductManagement.Serverless.Api.ResponseFormatters;
+using MyShop.ProductManagement.Serverless.Api.Services;
 using Serilog;
 using Serilog.Events;
 using Bootstrapper = MyShop.ProductManagement.Application.Bootstrapper;
@@ -33,11 +35,13 @@ namespace MyShop.ProductManagement.Serverless.Api
             RegisterApiServices(services)
                 .UseProductsServices(configuration)
                 .UseProductsDataAccess(configuration)
+                .UseMessagingServices(configuration)
                 .RegisterDomainServices();
         }
 
         private static IServiceCollection RegisterApiServices(IServiceCollection services)
         {
+            RegisterServices(services);
             RegisterLogging(services);
             RegisterResponseFormatters(services);
             RegisterMediators(services);
@@ -45,6 +49,11 @@ namespace MyShop.ProductManagement.Serverless.Api
             RegisterValidators(services);
 
             return services;
+        }
+
+        private static void RegisterServices(IServiceCollection services)
+        {
+            services.AddTransient<IMessageReader, MessageReader>();
         }
 
         private static void RegisterLogging(IServiceCollection services)
@@ -82,7 +91,10 @@ namespace MyShop.ProductManagement.Serverless.Api
         {
             var mediatorAssemblies = new[]
             {
-                typeof(Startup).Assembly, typeof(Bootstrapper).Assembly, typeof(DataAccess.Bootstrapper).Assembly
+                typeof(Startup).Assembly,
+                typeof(Bootstrapper).Assembly,
+                typeof(DataAccess.Bootstrapper).Assembly,
+                typeof(Messaging.Bootstrapper).Assembly
             };
             services.AddMediatR(mediatorAssemblies);
         }
@@ -91,6 +103,8 @@ namespace MyShop.ProductManagement.Serverless.Api
         {
             services.AddTransient<IRenderAction<GetProductByCodeDto, Result<GetProductResponse>>, DisplayProductFormatter>();
             services.AddTransient<IRenderAction<UpsertProductDto, Result<GetProductResponse>>, UpsertProductFormatter>();
+            services.AddTransient<IRenderAction<InsertProductDto, Result<GetProductResponse>>, InsertProductFormatter>();
+            services.AddTransient<IRenderAction<UpdateProductDto, Result<GetProductResponse>>, UpdateProductFormatter>();
         }
 
         protected virtual IConfigurationRoot GetConfigurationRoot(IFunctionsHostBuilder builder)

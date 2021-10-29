@@ -78,7 +78,9 @@ steps:
         -planSku "$(planSku)" 
         -planTier "$(planTier)" 
         -funcAppName "$(funcAppName)" 
-        -environmentName "$(environmentName)"
+        -environmentName "$(environmentName)" 
+        -sbWriteConnectionString "$(sbWriteConnectionString)" 
+        -sbReadConnectionString "$(sbReadConnectionString)" 
 
 #  The below two tasks ("Setting up variables to be transformed in configurations" and "Transform configurations" can be used to transform web API configurations)
   - task: AzurePowerShell@4
@@ -94,6 +96,35 @@ steps:
         echo $functionMasterKey
         Write-Host "##vso[task.setvariable variable=functionMasterKey]$functionMasterKey"
         # Write-Host "##vso[task.setvariable variable=stagingFunctionMasterKey]$stagingFunctionMasterKey"
+
+  - task: AzurePowerShell@2
+    displayName: "Setup firewall rule for build agent"
+    inputs:
+      azureSubscription: "$(azureSubscription)"
+      ScriptPath: "$(Pipeline.Workspace)/scripts/setupfirewall.ps1"
+      ScriptArguments: "$(serverName) $(rgName)"
+      azurePowerShellVersion: LatestVersion
+
+  - task: AzureCLI@2
+    displayName: "Migrate the database"
+    inputs:
+      azureSubscription: "$(azureSubscription)"
+      scriptType: "pscore"
+      scriptLocation: "inlineScript"
+      inlineScript: |
+        $dbDeployment = "$(serverName)"+"-"+"${{parameters.buildNumber}}"+"-deployment"
+        $testConnectionString=$(az deployment group show -g "$(rgName)" -n "$dbDeployment" --query properties.outputs.connectionString.value)
+
+        # echo $testConnectionString
+        $(Pipeline.Workspace)/DbConsoleApp/MyShop.ProductManagement.DataMigration.exe $testConnectionString
+
+  - task: AzurePowerShell@2
+    displayName: "Remove firewall rule for build agent"
+    inputs:
+      azureSubscription: "$(azureSubscription)"
+      ScriptPath: "$(Pipeline.Workspace)/scripts/removefirewall.ps1"
+      ScriptArguments: "$(serverName) $(rgName)"
+      azurePowerShellVersion: LatestVersion        
 
   - task: AzureAppServiceManage@0
     displayName: 'Stop Azure App Service (Staging)'
@@ -111,7 +142,7 @@ steps:
       azureSubscription: '$(azureSubscription)'    
       appType: functionApp
       WebAppName: "fn-$(funcAppName)-$(environmentName)"
-      package: '$(Pipeline.Workspace)/drop/$(Build.BuildId).zip'
+      package: '$(Pipeline.Workspace)/webapi/$(Build.BuildId).zip'
       enableCustomDeployment: true
       DeploymentType: zipDeploy
       JSONFiles: '**/host.json' 
@@ -148,30 +179,30 @@ steps:
       Slot: "Staging"
       SpecifySlotOrASE: true       
 
-  - task: AzurePowerShell@4
-    displayName: "Migrate database"
-    inputs:
-      azureSubscription: "$(azureSubscription)"
-      scriptType: 'inlineScript' # Optional. Options: filePath, inline
-      azurePowerShellVersion: 'latestVersion' # Required. Options: latestVersion, otherVersion
-      inline: |
-        $Body = @{
-            "input" = "test"
-        }
+  # - task: AzurePowerShell@4
+  #   displayName: "Migrate database"
+  #   inputs:
+  #     azureSubscription: "$(azureSubscription)"
+  #     scriptType: 'inlineScript' # Optional. Options: filePath, inline
+  #     azurePowerShellVersion: 'latestVersion' # Required. Options: latestVersion, otherVersion
+  #     inline: |
+  #       $Body = @{
+  #           "input" = "test"
+  #       }
 
-        $Header = @{
-        "x-functions-key" = "$(functionMasterKey)"
-        }
+  #       $Header = @{
+  #       "x-functions-key" = "$(functionMasterKey)"
+  #       }
 
-        $baseUrl = "https://fn-$(funcAppName)-$(environmentName).azurewebsites.net/api/v1/database"
+  #       $baseUrl = "https://fn-$(funcAppName)-$(environmentName).azurewebsites.net/api/v1/database"
  
-        $Parameters = @{
-          Method = "POST"
-          Uri =  $baseUrl
-          Body = ($Body | ConvertTo-Json) 
-          Headers     = $Header
-          ContentType = "application/json"
-        }       
+  #       $Parameters = @{
+  #         Method = "POST"
+  #         Uri =  $baseUrl
+  #         Body = ($Body | ConvertTo-Json) 
+  #         Headers     = $Header
+  #         ContentType = "application/json"
+  #       }       
 
-        Invoke-RestMethod @Parameters             
+  #       Invoke-RestMethod @Parameters             
         
