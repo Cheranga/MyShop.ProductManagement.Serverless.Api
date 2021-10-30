@@ -47,6 +47,10 @@
         "updateSubscription": {
             "type": "string",
             "defaultValue": "update"
+        },
+        "serviceBusName":{
+            "type": "string",
+            "defaultValue": "TBD"
         }
     },
     "variables": {
@@ -141,8 +145,7 @@
                         "FUNCTIONS_WORKER_RUNTIME": "dotnet",
                         "WEBSITE_TIME_ZONE": "[variables('timeZone')]",
                         "WEBSITE_ADD_SITENAME_BINDINGS_IN_APPHOST_CONFIG": 1,
-                        "ServiceBusConfig:WriteConnectionString": "[variables('sbWriteConnectionString')]",
-                        "ServiceBusConfig:ReadConnectionString": "[variables('sbReadConnectionString')]",
+                        "ServiceBusConfig:FullyQualifiedNamespace":"[concat(parameters('serviceBusName'),'servicebus.windows.net')]",
                         "ServiceBusConfig:WriteTopic": "[parameters('productsTopic')]",
                         "ServiceBusConfig:UpdateProductSubscription": "[parameters('updateSubscription')]",
                         "ServiceBusConfig:CreateProductSubscription": "[parameters('createSubscription')]"

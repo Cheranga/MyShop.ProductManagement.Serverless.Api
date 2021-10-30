@@ -81,6 +81,10 @@
         "sbReadConnectionString": {
             "type": "securestring",
             "defaultValue": "TBD"
+        },
+        "serviceBusName":{
+            "type": "string",
+            "defaultValue": "TBD"
         }
     },
     "variables": {
@@ -261,6 +265,9 @@
                     },
                     "appInsightsKey": {
                         "value": "[reference(variables('appInsightsDeployment')).outputs.appInsightsKey.value]"
+                    },
+                    "serviceBusName":{
+                        "value": "[parameters('serviceBusName')]"
                     }
                 }
             },

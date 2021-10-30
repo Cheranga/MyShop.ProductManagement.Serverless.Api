@@ -81,6 +81,7 @@ steps:
         -environmentName "$(environmentName)" 
         -sbWriteConnectionString "$(sbWriteConnectionString)" 
         -sbReadConnectionString "$(sbReadConnectionString)" 
+        -serviceBusName "$(serviceBusName)" 
 
 #  The below two tasks ("Setting up variables to be transformed in configurations" and "Transform configurations" can be used to transform web API configurations)
   - task: AzurePowerShell@4

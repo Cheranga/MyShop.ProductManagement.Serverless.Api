@@ -8,25 +8,27 @@ using Azure.Messaging.ServiceBus;
 using Microsoft.Extensions.Logging;
 using MyShop.ProductManagement.Application.Constants;
 using MyShop.ProductManagement.Domain;
+using MyShop.ProductManagement.Messaging.Configs;
 
 namespace MyShop.ProductManagement.Messaging.Handlers
 {
     public class OrderedMessagePublisher : IOrderedMessagePublisher
     {
+        private readonly ServiceBusConfig _serviceBusConfig;
         private readonly ServiceBusClient _serviceBusClient;
 
         private readonly ILogger<OrderedMessagePublisher> _logger;
 
-        public OrderedMessagePublisher(ServiceBusClient serviceBusClient, ILogger<OrderedMessagePublisher> logger)
+        public OrderedMessagePublisher(ServiceBusConfig serviceBusConfig, ServiceBusClient serviceBusClient, ILogger<OrderedMessagePublisher> logger)
         {
-            
+            _serviceBusConfig = serviceBusConfig;
             _serviceBusClient = serviceBusClient;
             _logger = logger;
         }
 
         public async Task<Result> PublishAsync<TMessage>(TMessage message) where TMessage : OrderedMessageBase
         {
-            var sender = _serviceBusClient.CreateSender("serverless-products");
+            var sender = _serviceBusClient.CreateSender(_serviceBusConfig.WriteTopic);
 
             try
             {
