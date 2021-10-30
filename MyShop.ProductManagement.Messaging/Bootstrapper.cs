@@ -1,4 +1,5 @@
-﻿using Microsoft.Azure.ServiceBus;
+﻿using Azure.Identity;
+using Microsoft.Extensions.Azure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -18,11 +19,17 @@ namespace MyShop.ProductManagement.Messaging
                 return config;
             });
 
-            services.AddTransient<ITopicClient, TopicClient>(provider =>
+            services.AddAzureClients(x =>
             {
-                var serviceBusConfig = provider.GetRequiredService<ServiceBusConfig>();
-                return new TopicClient(serviceBusConfig.WriteConnectionString, serviceBusConfig.WriteTopic);
+                x.AddServiceBusClient(configuration.GetSection(nameof(ServiceBusConfig)))
+                    .WithCredential(new DefaultAzureCredential());
             });
+            // services.AddSingleton<ITopicClient, TopicClient>(provider =>
+            // {
+            //     var serviceBusConfig = provider.GetRequiredService<ServiceBusConfig>();
+            //     new ServiceBusClient()
+            //     return new TopicClient(serviceBusConfig.WriteConnectionString, serviceBusConfig.WriteTopic);
+            // });
 
             services.AddTransient<IOrderedMessagePublisher, OrderedMessagePublisher>();
 
