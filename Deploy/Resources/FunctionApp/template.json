@@ -54,6 +54,7 @@
         }
     },
     "variables": {
+        "serviceBusNamespace": "[concat(parameters('serviceBusName'),'servicebus.windows.net')]",
         "dbConnectionString": "[concat('@Microsoft.KeyVault(SecretUri=https://', parameters('keyVaultName'), '.vault.azure.net/secrets/dbConnectionString/)')]",
         "sbWriteConnectionString": "[concat('@Microsoft.KeyVault(SecretUri=https://', parameters('keyVaultName'), '.vault.azure.net/secrets/sbWriteConnectionString/)')]",
         "sbReadConnectionString": "[concat('@Microsoft.KeyVault(SecretUri=https://', parameters('keyVaultName'), '.vault.azure.net/secrets/sbReadConnectionString/)')]",
@@ -145,7 +146,8 @@
                         "FUNCTIONS_WORKER_RUNTIME": "dotnet",
                         "WEBSITE_TIME_ZONE": "[variables('timeZone')]",
                         "WEBSITE_ADD_SITENAME_BINDINGS_IN_APPHOST_CONFIG": 1,
-                        "ServiceBusConfig:FullyQualifiedNamespace":"[concat(parameters('serviceBusName'),'servicebus.windows.net')]",
+                        "ServiceBusConnection__fullyQualifiedNamespace": "[variables('serviceBusNamespace')]",
+                        "ServiceBusConfig:FullyQualifiedNamespace":"[variables('serviceBusNamespace')]",
                         "ServiceBusConfig:WriteTopic": "[parameters('productsTopic')]",
                         "ServiceBusConfig:UpdateProductSubscription": "[parameters('updateSubscription')]",
                         "ServiceBusConfig:CreateProductSubscription": "[parameters('createSubscription')]"
