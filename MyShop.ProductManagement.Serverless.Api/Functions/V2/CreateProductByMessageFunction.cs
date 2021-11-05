@@ -21,7 +21,7 @@ namespace MyShop.ProductManagement.Serverless.Api.Functions.V2
 
         [FunctionName(nameof(CreateProductByMessageFunction))]
         public async Task Run(
-            [ServiceBusTrigger("%ServiceBusConfig:WriteTopic%", "%ServiceBusConfig:CreateProductSubscription%", Connection = "ServiceBusConfig:ReadConnectionString", IsSessionsEnabled = true)]
+            [ServiceBusTrigger("%ServiceBusConfig:WriteTopic%", "%ServiceBusConfig:CreateProductSubscription%", Connection = "ServiceBusConfig", IsSessionsEnabled = true)]
             Message message,
             IMessageSession messageSession, string lockToken)
         {

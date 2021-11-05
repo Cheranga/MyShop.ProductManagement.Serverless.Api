@@ -21,7 +21,7 @@ namespace MyShop.ProductManagement.Serverless.Api.Functions.V2
 
         [FunctionName(nameof(UpdateProductByMessageFunction))]
         public async Task Run(
-            [ServiceBusTrigger("%ServiceBusConfig:WriteTopic%", "%ServiceBusConfig:UpdateProductSubscription%", Connection = "ServiceBusConfig:ReadConnectionString", IsSessionsEnabled = true)]
+            [ServiceBusTrigger("%ServiceBusConfig:WriteTopic%", "%ServiceBusConfig:UpdateProductSubscription%", Connection = "ServiceBusConfig", IsSessionsEnabled = true)]
             Message message,
             IMessageSession messageSession, string lockToken)
         {
