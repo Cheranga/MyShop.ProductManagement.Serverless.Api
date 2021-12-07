@@ -27,7 +27,7 @@ namespace MyShop.ProductManagement.Domain.Behaviours
                 return await next();
             }
 
-            _logger.LogInformation("Validating {request}", typeof(TRequest).Name);
+            _logger.LogInformation("Validating {request} with {correlationId}", typeof(TRequest).Name, request.CorrelationId);
 
             var validationResult = await _validator.ValidateAsync(request, cancellationToken);
 
