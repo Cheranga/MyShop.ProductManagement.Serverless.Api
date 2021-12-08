@@ -38,16 +38,13 @@ namespace MyShop.ProductManagement.DataAccess.CommandHandlers
                         try
                         {
                             var updatedProduct = await connection.QuerySingleOrDefaultAsync<Product>(UpdateCommand, request, transaction);
+                            transaction.Commit();
                             return Result<Product>.Success(updatedProduct);
                         }
                         catch (Exception exception)
                         {
                             _logger.LogError(exception, "Error occured when updating product. {@product}", request);
                             transaction.Rollback();
-                        }
-                        finally
-                        {
-                            transaction.Commit();
                         }
                     }
                 }

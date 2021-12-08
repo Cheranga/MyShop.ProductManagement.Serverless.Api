@@ -7,7 +7,7 @@ using MyShop.ProductManagement.Application.Responses;
 using MyShop.ProductManagement.Domain;
 
 namespace MyShop.ProductManagement.Application.Handlers
-{
+{   
     public class InsertProductRequestHandler : IRequestHandler<InsertProductRequest, Result<GetProductResponse>>
     {
         private readonly IMediator _mediator;
